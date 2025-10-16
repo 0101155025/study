@@ -156,40 +156,53 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 void CAN_SendData(void){
-	TxHeader.StdId = 0x103;
-	TxHeader.DLC = 2;
-	TxHeader.ExtId = 0;
-	TxHeader.IDE = CAN_ID_STD;
-	TxHeader.RTR = CAN_RTR_DATA;
+	TxHeader.StdId = 0x103;         // 标准帧id
+	TxHeader.DLC = 2;  							// 数据长度
+	TxHeader.ExtId = 0;							// 扩展帧id
+	TxHeader.IDE = CAN_ID_STD;      // 标准帧还是扩展帧
+	TxHeader.RTR = CAN_RTR_DATA;    // 是标准帧还是远程帧
 	TxData[0] = (uint8_t)0x103;
 	TxData[1] = 0;
 	if(HAL_CAN_AddTxMessage(&hcan,&TxHeader,TxData,&TxMailBox) == HAL_OK){};
+		/* HAL_CAN_AddTxMessage */
+		/* 检查有没有空闲邮箱,如果有,把数据放到空闲邮箱里 */
 }
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
+	/* HAL_CAN_RxFifo0MsgPendingCallback */
+	/* 该函数是告诉你fifo0中有消息了 */
+	
   HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
+	/* HAL_CAN_GetRxMessage */
+	/* 该函数用来把fifo中接收到的数据放到rxdata和RxHeader里 */
 }
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan)
 {
+	/* 信息从该邮箱成功发送后触发的回调函数 */
     uartTxData[0] = 0x01;
     HAL_UART_Transmit(&huart2, uartTxData, 1, 100);
 }
 void CAN_Filter_Init(void) {
-    CAN_FilterTypeDef sFilterConfig;
-    sFilterConfig.FilterBank = 0;
-    sFilterConfig.FilterFIFOAssignment = CAN_FILTER_FIFO0 ;
-    sFilterConfig.FilterIdHigh = (0x103 << 5) & 0xffff;
-    sFilterConfig.FilterIdLow = 0x0000;
-    sFilterConfig.FilterMaskIdHigh = 0xffff;
-    sFilterConfig.FilterMaskIdLow = 0x0000;
-    sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-    sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-    sFilterConfig.SlaveStartFilterBank = 14;
-	  sFilterConfig.FilterActivation = ENABLE;
-    HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);
+    CAN_FilterTypeDef sFilterConfig;      											// 定义过滤器
+    sFilterConfig.FilterBank = 0;																// 过滤器组编号
+    sFilterConfig.FilterFIFOAssignment = CAN_FILTER_FIFO0 ;     // 匹配成功后消息存入哪个fifo
+    sFilterConfig.FilterIdHigh = (0x103 << 5) & 0xffff;					// 过滤器id高16位    期望收到数据的id
+    sFilterConfig.FilterIdLow = 0x0000;													// 过滤器id低16位
+    sFilterConfig.FilterMaskIdHigh = 0xffff;										// 过滤器掩码高16位  掩码告诉你哪些位需要严格匹配
+    sFilterConfig.FilterMaskIdLow = 0x0000;											// 过滤器掩码低16位
+    sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;						// 过滤器模式(掩码模式/列表模式)
+    sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;					// 过滤器位宽(用32位过滤器还是16位)
+    sFilterConfig.SlaveStartFilterBank = 14;										// 划分主,从过滤器(一共14个),主从can1接收,从can2
+	  sFilterConfig.FilterActivation = ENABLE;										// 过滤器使能
+    HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);								// 配置过滤器
 	  uint32_t can_it = CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_TX_MAILBOX_EMPTY;
-    HAL_CAN_ActivateNotification(&hcan, can_it);
-    HAL_CAN_Start(&hcan);
-		HAL_CAN_GetState(&hcan);
+    HAL_CAN_ActivateNotification(&hcan, can_it);                // 激活can中断
+	/* can_it可以激活的常用中断如下: */
+	/* CAN_IT_RX_FIFO0_MSG_PENDING: can接收fifo0中有报文等待读取 */
+	/* CAN_IT_TX_MAILBOX_EMPTY:发送邮箱中至少有一个是空的 */
+	/* CAN_IT_RX_FIFO0_FULL: fifo0被填满 */
+	/* CAN_IT_RX_FIFO0_OVERRUN: fifo0溢出了 */
+    HAL_CAN_Start(&hcan);        // 启动can
+		HAL_CAN_GetState(&hcan);     // 获取can状态
 		HAL_Delay(10);
 }
 /* USER CODE END 4 */
