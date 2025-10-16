@@ -18,13 +18,16 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 #include "can.h"
+#include "dma.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <string.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,21 +48,23 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-CAN_TxHeaderTypeDef TxHeader;
-CAN_RxHeaderTypeDef RxHeader;
-uint8_t TxData[8] = {0};
-uint8_t RxData[8];
-uint32_t TxMailBox;
-uint8_t uartTxData[2];
+uint32_t g_time_cnt = 0;        // 用来记录定时回调函数次数
+int g_button_cnt = 0; 					// 用来记录按键
+TaskHandle_t xLedTaskHandle;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
-void CAN_SendData(void);
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
-void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan);
-void CAN_Filter_Init(void);
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if(htim == &htim2){
+		if(++g_time_cnt >= g_button_cnt * 1000){
+			g_time_cnt = 0;
+			HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_4);
+		}
+	}
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -96,18 +101,27 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_CAN_Init();
+  MX_TIM2_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-	CAN_Filter_Init();
+
   /* USER CODE END 2 */
+
+  /* Init scheduler */
+  osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		CAN_SendData();
-		HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -145,7 +159,7 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
@@ -155,56 +169,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void CAN_SendData(void){
-	TxHeader.StdId = 0x103;         // 标准帧id
-	TxHeader.DLC = 2;  							// 数据长度
-	TxHeader.ExtId = 0;							// 扩展帧id
-	TxHeader.IDE = CAN_ID_STD;      // 标准帧还是扩展帧
-	TxHeader.RTR = CAN_RTR_DATA;    // 是标准帧还是远程帧
-	TxData[0] = (uint8_t)0x103;
-	TxData[1] = 0;
-	if(HAL_CAN_AddTxMessage(&hcan,&TxHeader,TxData,&TxMailBox) == HAL_OK){};
-		/* HAL_CAN_AddTxMessage */
-		/* 检查有没有空闲邮箱,如果有,把数据放到空闲邮箱里 */
-}
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
-	/* HAL_CAN_RxFifo0MsgPendingCallback */
-	/* 该函数是告诉你fifo0中有消息了 */
-	
-  HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
-	/* HAL_CAN_GetRxMessage */
-	/* 该函数用来把fifo中接收到的数据放到rxdata和RxHeader里 */
-}
-void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan)
-{
-	/* 信息从该邮箱成功发送后触发的回调函数 */
-    uartTxData[0] = 0x01;
-    HAL_UART_Transmit(&huart2, uartTxData, 1, 100);
-}
-void CAN_Filter_Init(void) {
-    CAN_FilterTypeDef sFilterConfig;      											// 定义过滤器
-    sFilterConfig.FilterBank = 0;																// 过滤器组编号
-    sFilterConfig.FilterFIFOAssignment = CAN_FILTER_FIFO0 ;     // 匹配成功后消息存入哪个fifo
-    sFilterConfig.FilterIdHigh = (0x103 << 5) & 0xffff;					// 过滤器id高16位    期望收到数据的id
-    sFilterConfig.FilterIdLow = 0x0000;													// 过滤器id低16位
-    sFilterConfig.FilterMaskIdHigh = 0xffff;										// 过滤器掩码高16位  掩码告诉你哪些位需要严格匹配
-    sFilterConfig.FilterMaskIdLow = 0x0000;											// 过滤器掩码低16位
-    sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;						// 过滤器模式(掩码模式/列表模式)
-    sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;					// 过滤器位宽(用32位过滤器还是16位)
-    sFilterConfig.SlaveStartFilterBank = 14;										// 划分主,从过滤器(一共14个),主从can1接收,从can2
-	  sFilterConfig.FilterActivation = ENABLE;										// 过滤器使能
-    HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);								// 配置过滤器
-	  uint32_t can_it = CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_TX_MAILBOX_EMPTY;
-    HAL_CAN_ActivateNotification(&hcan, can_it);                // 激活can中断
-	/* can_it可以激活的常用中断如下: */
-	/* CAN_IT_RX_FIFO0_MSG_PENDING: can接收fifo0中有报文等待读取 */
-	/* CAN_IT_TX_MAILBOX_EMPTY:发送邮箱中至少有一个是空的 */
-	/* CAN_IT_RX_FIFO0_FULL: fifo0被填满 */
-	/* CAN_IT_RX_FIFO0_OVERRUN: fifo0溢出了 */
-    HAL_CAN_Start(&hcan);        // 启动can
-		HAL_CAN_GetState(&hcan);     // 获取can状态
-		HAL_Delay(10);
-}
+
 /* USER CODE END 4 */
 
 /**

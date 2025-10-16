@@ -1,0 +1,15 @@
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/timers.c
+homework5\timers.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+homework5\timers.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+homework5\timers.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+homework5\timers.o: ../Core/Inc/FreeRTOSConfig.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/portmacro.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+homework5\timers.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
