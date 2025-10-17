@@ -51,20 +51,14 @@
 uint32_t g_time_cnt = 0;        // 用来记录定时回调函数次数
 int g_button_cnt = 0; 					// 用来记录按键
 TaskHandle_t xLedTaskHandle;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	if(htim == &htim2){
-		if(++g_time_cnt >= g_button_cnt * 1000){
-			g_time_cnt = 0;
-			HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_4);
-		}
-	}
-}
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
