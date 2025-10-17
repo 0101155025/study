@@ -40,4 +40,6 @@ homework5\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu
 homework5\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 homework5\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 homework5\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+homework5\stm32f1xx_it.o: ../Core/Inc/usart.h
+homework5\stm32f1xx_it.o: ../Core/Inc/main.h
 homework5\stm32f1xx_it.o: ../Core/Inc/stm32f1xx_it.h

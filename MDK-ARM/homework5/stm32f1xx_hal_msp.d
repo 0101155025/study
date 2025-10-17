@@ -40,3 +40,5 @@ homework5\stm32f1xx_hal_msp.o: ../Middlewares/Third_Party/FreeRTOS/Source/includ
 homework5\stm32f1xx_hal_msp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 homework5\stm32f1xx_hal_msp.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 homework5\stm32f1xx_hal_msp.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+homework5\stm32f1xx_hal_msp.o: ../Core/Inc/usart.h
+homework5\stm32f1xx_hal_msp.o: ../Core/Inc/main.h

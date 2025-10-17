@@ -40,3 +40,13 @@ homework5\freertos.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 homework5\freertos.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 homework5\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 homework5\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+homework5\freertos.o: ../Core/Inc/usart.h
+homework5\freertos.o: ../Core/Inc/main.h
+homework5\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+homework5\freertos.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+homework5\freertos.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
+homework5\freertos.o: ../Core/Inc/tim.h
+homework5\freertos.o: ../Core/Inc/can.h
+homework5\freertos.o: D:\Keil5\ARM\ARMCC\Bin\..\include\math.h
+homework5\freertos.o: D:\Keil5\ARM\ARMCC\Bin\..\include\time.h
+homework5\freertos.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h

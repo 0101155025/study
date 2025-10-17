@@ -41,3 +41,5 @@ homework5\dma.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers
 homework5\dma.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 homework5\dma.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 homework5\dma.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+homework5\dma.o: ../Core/Inc/usart.h
+homework5\dma.o: ../Core/Inc/main.h

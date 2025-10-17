@@ -49,7 +49,7 @@
 
 /* USER CODE BEGIN PV */
 uint32_t g_time_cnt = 0;        // 用来记录定时回调函数次数
-int g_button_cnt = 0; 					// 用来记录按键
+int g_button_cnt = 1000; 					// 用来记录按键
 TaskHandle_t xLedTaskHandle;
 
 /* USER CODE END PV */
@@ -58,7 +58,14 @@ TaskHandle_t xLedTaskHandle;
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if(htim == &htim2){
+		if(++g_time_cnt >= g_button_cnt){
+			g_time_cnt = 0;
+			HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_6);
+		}
+	}
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -100,7 +107,7 @@ int main(void)
   MX_TIM2_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+	HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE END 2 */
 
   /* Init scheduler */
