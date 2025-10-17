@@ -50,3 +50,4 @@ homework5\freertos.o: ../Core/Inc/can.h
 homework5\freertos.o: D:\Keil5\ARM\ARMCC\Bin\..\include\math.h
 homework5\freertos.o: D:\Keil5\ARM\ARMCC\Bin\..\include\time.h
 homework5\freertos.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+homework5\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h

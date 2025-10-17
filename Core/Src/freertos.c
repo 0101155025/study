@@ -34,6 +34,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "semphr.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,11 +46,10 @@ typedef enum{
 } MotorType;
 
 /* USER CODE END PTD */
-#define ALPHA 0.3f
-#define FILTER_TASK_PERIOD (100 / portTICK_PERIOD_MS)
+
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define ALPHA 0.3
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -64,18 +64,15 @@ char buf[128];
 QueueHandle_t xMessageQueue;
 CAN_TxHeaderTypeDef TxHeader;
 CAN_RxHeaderTypeDef RxHeader;
-uint8_t TxData[8] = {0};
+uint8_t CAN_TxData[8] = {0};
 uint8_t RxData[8];
 uint32_t TxMailBox;
 TaskHandle_t xFilterTaskHandle;
+int button3State = 0;
+volatile uint8_t bUartDmaIdle = 1;
+SemaphoreHandle_t xUartMutex;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -90,38 +87,57 @@ void CANTask(void *parames);
 void GenerateNoisyTask(void *parames){
 	static double x = 0.0;
 	double noise;
-	static double raw;
+  double raw;
+	srand(HAL_GetTick());
 	for(;;){
-		noise = 0.1 + (2.0 * rand() / RAND_MAX - 1.0);
-		raw = sqrt(x) + noise;
-		x += 0.5;
-		if(x > 10.0) x = 0.0;
-		xTaskNotify(xFilterTaskHandle,(uint32_t)&raw,eSetValueWithOverwrite);
+		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8) == SET) button3State = !button3State;
+		if(button3State && xMessageQueue != NULL){
+				noise = 0.1 + (2.0 * rand() / RAND_MAX - 1.0);
+				raw = sqrt(x) + noise;
+				x += 0.5;
+				if(x > 10.0) x = 0.0;
+				xQueueSend(xMessageQueue,&raw,100);
+			}
 		vTaskDelay(50);
 	}
 }
 void FilterTask(void *parames){
 	static double last_filtered = 0.0;
 	double current_filtered;
-	double max = 0.0,min = 0.0;
+	double max = -1e18,min = 1e18;
 	double range = 0.0;
-	uint32_t RxData;
-	uint8_t TxData[2];
+	double RxData;
+	uint8_t uart_TxData[sizeof(double) * 2];
+	
 	for(;;){
-		xTaskNotifyWait(0,0xffffffff,&RxData,portMAX_DELAY);
-		double *RawData = (double *)RxData;
-		current_filtered = ALPHA * (*RawData) + (1 - ALPHA) * last_filtered;
+		if(xMessageQueue == NULL){
+			vTaskDelay(100);
+			continue;
+		}
+		xQueueReceive(xMessageQueue,&RxData,portMAX_DELAY);
+		current_filtered = ALPHA * RxData + (1 - ALPHA) * last_filtered;
 		last_filtered = current_filtered;
 		if(current_filtered > max) max = current_filtered;
 		if(current_filtered < min) min = current_filtered;
 		range = max - min;
-		
-		vTaskDelay(50);
+		memcpy(uart_TxData,&current_filtered,sizeof(double));
+		memcpy(uart_TxData+sizeof(double),&range,sizeof(double));
+		if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
+			while(bUartDmaIdle == 0) taskYIELD();
+			bUartDmaIdle = 0;
+			HAL_UART_Transmit_DMA(&huart2,uart_TxData,sizeof(uart_TxData));
+			xSemaphoreGive(xUartMutex);
+		}
+		vTaskDelay(1000);
 	}
+}
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
+    if(huart == &huart2){
+        bUartDmaIdle = 1;
+    }
 }
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -137,6 +153,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
+	xUartMutex = xSemaphoreCreateMutex();
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -149,11 +166,11 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
+	xMessageQueue = xQueueCreate(20,sizeof(double));
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -161,10 +178,16 @@ void MX_FREERTOS_Init(void) {
 	if(xTaskCreate(ButtonTask,"ButtonTask",128,NULL,osPriorityNormal,NULL) != pdPASS){
 		/* 有时间写个错误处理函数 */
 	}
-	if(xTaskCreate(MotorTask,"MotorTask",128,NULL,osPriorityNormal,NULL) != pdPASS){
+	if(xTaskCreate(MotorTask,"MotorTask",256,NULL,osPriorityNormal,NULL) != pdPASS){
 		/* 有时间写个错误处理函数 */
 	}
 	if(xTaskCreate(CANTask,"CANTask",128,NULL,osPriorityNormal,NULL) != pdPASS){
+		/* 有时间写个错误处理函数 */
+	}
+	if(xTaskCreate(GenerateNoisyTask,"NoisyTask",128,NULL,osPriorityNormal,NULL) != pdPASS){
+		/* 有时间写个错误处理函数 */
+	}
+	if(xTaskCreate(FilterTask,"FilterTask",256,NULL,osPriorityNormal,NULL) != pdPASS){
 		/* 有时间写个错误处理函数 */
 	}
 	
@@ -201,7 +224,7 @@ void ButtonTask(void *parames){
 	for(;;){
 		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) == GPIO_PIN_SET){
 			curtime = HAL_GetTick();
-			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) == GPIO_PIN_SET);
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) == GPIO_PIN_SET) taskYIELD();
 			if(HAL_GetTick() - curtime >= 2000) g_button_cnt += 125;
 			else g_button_cnt -= 125;
 		}
@@ -214,22 +237,37 @@ void MotorTask(void *parames){
 	for(;;){
 		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) == GPIO_PIN_SET){
 			vTaskDelay(20);
-			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) == GPIO_PIN_SET);
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) == GPIO_PIN_SET) taskYIELD();
 			switch(mt){
 				case motor3508 :
 					mt = motor6020;
-					snprintf(buf,sizeof(buf),"当前类型:%d/r/n",6020);
-					HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
+					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",6020);
+				  if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
+						while(bUartDmaIdle == 0) taskYIELD();
+						bUartDmaIdle = 0;
+						HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
+						xSemaphoreGive(xUartMutex);
+					}
 					break;
 				case motor6020 :
 					mt = motor2006;
-					snprintf(buf,sizeof(buf),"当前类型:%d/r/n",2006);
-					HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
+					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",2006);
+				  if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
+						while(bUartDmaIdle == 0) taskYIELD();
+						bUartDmaIdle = 0;
+						HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
+						xSemaphoreGive(xUartMutex);
+					}
 					break;
 				case motor2006 :
 					mt = motor3508;
-					snprintf(buf,sizeof(buf),"当前类型:%d/r/n",3508);
-					HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
+					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",3508);
+				  if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
+						while(bUartDmaIdle == 0) taskYIELD();
+						bUartDmaIdle = 0;
+						HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
+						xSemaphoreGive(xUartMutex);
+					}
 					break;
 			}
 			
@@ -243,22 +281,25 @@ void CAN_SendData(void){
 	TxHeader.ExtId = 0;							// 扩展帧id
 	TxHeader.IDE = CAN_ID_STD;      // 标准帧还是扩展帧
 	TxHeader.RTR = CAN_RTR_DATA;    // 是标准帧还是远程帧
-	TxData[0] = 1;       // 发一个π的小数点
-	TxData[1] = 4;
-	TxData[2] = 1;
-	TxData[3] = 5;
-	TxData[4] = 9;
-	TxData[5] = 2;
-	TxData[6] = 6;
-	TxData[7] = 5;
-	if(HAL_CAN_AddTxMessage(&hcan,&TxHeader,TxData,&TxMailBox) == HAL_OK){};
+	CAN_TxData[0] = 1;       // 发一个π的小数点
+	CAN_TxData[1] = 4;
+	CAN_TxData[2] = 1;
+	CAN_TxData[3] = 5;
+	CAN_TxData[4] = 9;
+	CAN_TxData[5] = 2;
+	CAN_TxData[6] = 6;
+	CAN_TxData[7] = 5;
+	if(HAL_CAN_AddTxMessage(&hcan,&TxHeader,CAN_TxData,&TxMailBox) == HAL_OK){};
 }
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
   HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
 }
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan)
 {
-    HAL_UART_Transmit(&huart2,TxData,sizeof(TxData), 100);
+	if(xSemaphoreTake(xUartMutex,0) == pdPASS){
+		HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
+		xSemaphoreGive(xUartMutex);
+	}	
 }
 void CAN_Filter_Init(void) {
     CAN_FilterTypeDef sFilterConfig;      											// 定义过滤器
