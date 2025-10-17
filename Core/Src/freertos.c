@@ -241,7 +241,7 @@ void MotorTask(void *parames){
 			switch(mt){
 				case motor3508 :
 					mt = motor6020;
-					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",6020);
+					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",mt);
 				  if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
 						while(bUartDmaIdle == 0) taskYIELD();
 						bUartDmaIdle = 0;
@@ -251,7 +251,7 @@ void MotorTask(void *parames){
 					break;
 				case motor6020 :
 					mt = motor2006;
-					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",2006);
+					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",mt);
 				  if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
 						while(bUartDmaIdle == 0) taskYIELD();
 						bUartDmaIdle = 0;
@@ -261,7 +261,7 @@ void MotorTask(void *parames){
 					break;
 				case motor2006 :
 					mt = motor3508;
-					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",3508);
+					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",mt);
 				  if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
 						while(bUartDmaIdle == 0) taskYIELD();
 						bUartDmaIdle = 0;
@@ -296,10 +296,9 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 }
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan)
 {
-	if(xSemaphoreTake(xUartMutex,0) == pdPASS){
-		HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
-		xSemaphoreGive(xUartMutex);
-	}	
+	
+	HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
+		
 }
 void CAN_Filter_Init(void) {
     CAN_FilterTypeDef sFilterConfig;      											// 定义过滤器
