@@ -40,9 +40,9 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 typedef enum{
-	motor3508,
-	motor6020,
-	motor2006,
+	motor2006 = 2006,
+	motor3508 = 3508,
+	motor6020 = 6020,
 } MotorType;
 
 /* USER CODE END PTD */
@@ -61,18 +61,28 @@ typedef enum{
 /* USER CODE BEGIN Variables */
 MotorType mt = motor3508;
 char buf[128];
-QueueHandle_t xMessageQueue;
 CAN_TxHeaderTypeDef TxHeader;
 CAN_RxHeaderTypeDef RxHeader;
 uint8_t CAN_TxData[8] = {0};
 uint8_t RxData[8];
 uint32_t TxMailBox;
-TaskHandle_t xFilterTaskHandle;
 int button3State = 0;
 volatile uint8_t bUartDmaIdle = 1;
 SemaphoreHandle_t xUartMutex;
+volatile uint8_t bAllowCan = 1;
+typedef struct {
+	float fdata[2];
+	uint8_t tail[4];
+} FrameStruct;
+const uint8_t framtail[4] = {0x00,0x00,0x80,0x7f};
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
+//osThreadId_t defaultTaskHandle;
+//const osThreadAttr_t defaultTask_attributes = {
+//  .name = "defaultTask",
+//  .stack_size = 128 * 4,
+//  .priority = (osPriority_t) osPriorityNormal,
+//};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -82,62 +92,15 @@ void MotorTask(void *parames);
 void CAN_SendData(void);
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan);
+void HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef *hcan);
+void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan);
 void CAN_Filter_Init(void);
 void CANTask(void *parames);
-void GenerateNoisyTask(void *parames){
-	static double x = 0.0;
-	double noise;
-  double raw;
-	srand(HAL_GetTick());
-	for(;;){
-		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8) == SET) button3State = !button3State;
-		if(button3State && xMessageQueue != NULL){
-				noise = 0.1 + (2.0 * rand() / RAND_MAX - 1.0);
-				raw = sqrt(x) + noise;
-				x += 0.5;
-				if(x > 10.0) x = 0.0;
-				xQueueSend(xMessageQueue,&raw,100);
-			}
-		vTaskDelay(50);
-	}
-}
-void FilterTask(void *parames){
-	static double last_filtered = 0.0;
-	double current_filtered;
-	double max = -1e18,min = 1e18;
-	double range = 0.0;
-	double RxData;
-	uint8_t uart_TxData[sizeof(double) * 2];
-	
-	for(;;){
-		if(xMessageQueue == NULL){
-			vTaskDelay(100);
-			continue;
-		}
-		xQueueReceive(xMessageQueue,&RxData,portMAX_DELAY);
-		current_filtered = ALPHA * RxData + (1 - ALPHA) * last_filtered;
-		last_filtered = current_filtered;
-		if(current_filtered > max) max = current_filtered;
-		if(current_filtered < min) min = current_filtered;
-		range = max - min;
-		memcpy(uart_TxData,&current_filtered,sizeof(double));
-		memcpy(uart_TxData+sizeof(double),&range,sizeof(double));
-		if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
-			while(bUartDmaIdle == 0) taskYIELD();
-			bUartDmaIdle = 0;
-			HAL_UART_Transmit_DMA(&huart2,uart_TxData,sizeof(uart_TxData));
-			xSemaphoreGive(xUartMutex);
-		}
-		vTaskDelay(1000);
-	}
-}
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
-    if(huart == &huart2){
-        bUartDmaIdle = 1;
-    }
-}
+void NoisyTask(void *parames);
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 /* USER CODE END FunctionPrototypes */
 
+//void StartDefaultTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -166,15 +129,16 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
-	xMessageQueue = xQueueCreate(20,sizeof(double));
+	
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* creation of defaultTask */
+//  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-	
+
 	if(xTaskCreate(ButtonTask,"ButtonTask",128,NULL,osPriorityNormal,NULL) != pdPASS){
 		/* 有时间写个错误处理函数 */
 	}
@@ -184,10 +148,7 @@ void MX_FREERTOS_Init(void) {
 	if(xTaskCreate(CANTask,"CANTask",128,NULL,osPriorityNormal,NULL) != pdPASS){
 		/* 有时间写个错误处理函数 */
 	}
-	if(xTaskCreate(GenerateNoisyTask,"NoisyTask",128,NULL,osPriorityNormal,NULL) != pdPASS){
-		/* 有时间写个错误处理函数 */
-	}
-	if(xTaskCreate(FilterTask,"FilterTask",256,NULL,osPriorityNormal,NULL) != pdPASS){
+	if(xTaskCreate(NoisyTask,"NoisyTask",384,NULL,osPriorityNormal + 1,NULL) != pdPASS){
 		/* 有时间写个错误处理函数 */
 	}
 	
@@ -206,16 +167,16 @@ void MX_FREERTOS_Init(void) {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
-{
-  /* USER CODE BEGIN StartDefaultTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END StartDefaultTask */
-}
+//void StartDefaultTask(void *argument)
+//{
+//  /* USER CODE BEGIN StartDefaultTask */
+//  /* Infinite loop */
+//  for(;;)
+//  {
+//    osDelay(1);
+//  }
+//  /* USER CODE END StartDefaultTask */
+//}
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
@@ -237,40 +198,31 @@ void MotorTask(void *parames){
 	for(;;){
 		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) == GPIO_PIN_SET){
 			vTaskDelay(20);
+			if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) != GPIO_PIN_SET){
+				vTaskDelay(50);
+				continue;
+			}
 			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) == GPIO_PIN_SET) taskYIELD();
 			switch(mt){
 				case motor3508 :
 					mt = motor6020;
 					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",mt);
-				  if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
-						while(bUartDmaIdle == 0) taskYIELD();
-						bUartDmaIdle = 0;
-						HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
-						xSemaphoreGive(xUartMutex);
-					}
 					break;
 				case motor6020 :
 					mt = motor2006;
 					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",mt);
-				  if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
-						while(bUartDmaIdle == 0) taskYIELD();
-						bUartDmaIdle = 0;
-						HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
-						xSemaphoreGive(xUartMutex);
-					}
 					break;
 				case motor2006 :
 					mt = motor3508;
 					snprintf(buf,sizeof(buf),"当前类型:%d\r\n",mt);
-				  if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
-						while(bUartDmaIdle == 0) taskYIELD();
-						bUartDmaIdle = 0;
-						HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
-						xSemaphoreGive(xUartMutex);
-					}
 					break;
 			}
-			
+			if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
+				while(bUartDmaIdle == 0) taskYIELD();
+				bUartDmaIdle = 0;
+				HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
+				xSemaphoreGive(xUartMutex);
+			}
 		}
 		vTaskDelay(50);
 	}
@@ -289,12 +241,26 @@ void CAN_SendData(void){
 	CAN_TxData[5] = 2;
 	CAN_TxData[6] = 6;
 	CAN_TxData[7] = 5;
-	if(HAL_CAN_AddTxMessage(&hcan,&TxHeader,CAN_TxData,&TxMailBox) == HAL_OK){};
+	if(HAL_CAN_AddTxMessage(&hcan,&TxHeader,CAN_TxData,&TxMailBox) != HAL_OK){
+	/* 有时间写个错误处理 */
+	};
 }
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
   HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
 }
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan)
+{
+	
+	HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
+		
+}
+void HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef *hcan)
+{
+	
+	HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
+		
+}
+void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan)
 {
 	
 	HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
@@ -317,14 +283,63 @@ void CAN_Filter_Init(void) {
     HAL_CAN_ActivateNotification(&hcan, can_it);                // 激活can中断
     HAL_CAN_Start(&hcan);        // 启动can
 		HAL_CAN_GetState(&hcan);     // 获取can状态
-		HAL_Delay(10);
+		vTaskDelay(10);
 }
 void CANTask(void *parames){
 	CAN_Filter_Init();
 	for(;;){
-		CAN_SendData();
-		vTaskDelay(1000);
+		if(bAllowCan){
+			CAN_SendData();
+		}
+		vTaskDelay(2000);
 	}
 }
-/* USER CODE END Application */
+void NoisyTask(void *parames){
+  static double x = 0.0;
+	double noise;
+  double raw;
+	static double last_filtered = 0.0;
+	double current_filtered;
+	double max = -1e18,min = 1e18;
+	double range = 0.0;
+	FrameStruct sendFrame;
+	srand((unsigned int)HAL_GetTick());
+	for(;;){
+		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8) == SET){
+		vTaskDelay(20);
+			if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8) == SET){
+				while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8) == SET) taskYIELD();
+				button3State = !button3State;
+				bAllowCan = !bAllowCan;
+			}
+		}
+		if(button3State){
+				noise = 0.1 + (2.0 * rand() / RAND_MAX - 1.0);
+				raw = sqrt(x) + noise;
+				x += 0.5;
+				if(x > 10.0) x = 0.0;
+				current_filtered = ALPHA * raw + (1 - ALPHA) * last_filtered;
+				last_filtered = current_filtered;
+				if(current_filtered > max) max = current_filtered;
+				if(current_filtered < min) min = current_filtered;
+				range = max - min;
+				sendFrame.fdata[0] = (float)current_filtered;
+			  sendFrame.fdata[1] = (float)range;
+			  memcpy(sendFrame.tail,framtail,sizeof(framtail));
+				if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
+					while(bUartDmaIdle == 0) taskYIELD();
+					bUartDmaIdle = 0;
+					HAL_UART_Transmit_DMA(&huart2,(uint8_t *)&sendFrame,sizeof(sendFrame));
+					xSemaphoreGive(xUartMutex);
+				}
+			}
+		vTaskDelay(500);
+	}
+}
 
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
+    if(huart == &huart2){
+        bUartDmaIdle = 1;
+    }
+}
+/* USER CODE END Application */
