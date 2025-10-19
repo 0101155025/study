@@ -184,20 +184,30 @@ void ButtonTask(void *parames){
 	int curtime;
 	for(;;){
 		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) == GPIO_PIN_SET){
+			// 记录长按
 			curtime = HAL_GetTick();
-			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) == GPIO_PIN_SET) taskYIELD();
-			if(HAL_GetTick() - curtime >= 2000) g_button_cnt += 125;
-			else g_button_cnt -= 125;
+			vTaskDelay(20);
+			if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) != GPIO_PIN_SET){
+				vTaskDelay(50);
+				continue;
+			}
+			if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) == GPIO_PIN_SET){
+				while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3) == GPIO_PIN_SET) taskYIELD();
+				if(HAL_GetTick() - curtime >= 2000) g_button_cnt += 125;
+				else g_button_cnt -= 125;
+			}
 		}
 		if(g_button_cnt > 1000) g_button_cnt = 125 ;
-		if(g_button_cnt < 125)g_button_cnt = 1000;
+		if(g_button_cnt < 125) g_button_cnt = 1000;
 		vTaskDelay(50);
 	}
 }
 void MotorTask(void *parames){
 	for(;;){
 		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) == GPIO_PIN_SET){
+			//消抖
 			vTaskDelay(20);
+			//如果是抖动
 			if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) != GPIO_PIN_SET){
 				vTaskDelay(50);
 				continue;
@@ -218,8 +228,8 @@ void MotorTask(void *parames){
 					break;
 			}
 			if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
-				while(bUartDmaIdle == 0) taskYIELD();
-				bUartDmaIdle = 0;
+				while(bUartDmaIdle == 0) taskYIELD();		// dma被占用
+				bUartDmaIdle = 0;			// 标志dma状态
 				HAL_UART_Transmit_DMA(&huart2,(uint8_t *)buf,strlen(buf));
 				xSemaphoreGive(xUartMutex);
 			}
@@ -231,9 +241,9 @@ void CAN_SendData(void){
 	TxHeader.StdId = 0x200;         // 标准帧id
 	TxHeader.DLC = 8;  							// 数据长度
 	TxHeader.ExtId = 0;							// 扩展帧id
-	TxHeader.IDE = CAN_ID_STD;      // 标准帧还是扩展帧
+	TxHeader.IDE = CAN_ID_STD;      // 标准帧还是扩展帧 
 	TxHeader.RTR = CAN_RTR_DATA;    // 是标准帧还是远程帧
-	CAN_TxData[0] = 1;       // 发一个π的小数点
+	CAN_TxData[0] = 1;      			  // 发一个π的小数点
 	CAN_TxData[1] = 4;
 	CAN_TxData[2] = 1;
 	CAN_TxData[3] = 5;
@@ -250,21 +260,15 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 }
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan)
 {
-	
 	HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
-		
 }
 void HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef *hcan)
 {
-	
 	HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
-		
 }
 void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan)
 {
-	
 	HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
-		
 }
 void CAN_Filter_Init(void) {
     CAN_FilterTypeDef sFilterConfig;      											// 定义过滤器
@@ -286,12 +290,12 @@ void CAN_Filter_Init(void) {
 		vTaskDelay(10);
 }
 void CANTask(void *parames){
-	CAN_Filter_Init();
+	CAN_Filter_Init();						//初始化外设
 	for(;;){
-		if(bAllowCan){
+		if(bAllowCan){							//当滤波没工作时发消息,防止波变得混乱
 			CAN_SendData();
 		}
-		vTaskDelay(2000);
+		vTaskDelay(2000);						//2s发一次
 	}
 }
 void NoisyTask(void *parames){
@@ -303,29 +307,36 @@ void NoisyTask(void *parames){
 	double max = -1e18,min = 1e18;
 	double range = 0.0;
 	FrameStruct sendFrame;
-	srand((unsigned int)HAL_GetTick());
+	srand((unsigned int)HAL_GetTick());						// 通过当前时间获得种子
 	for(;;){
 		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8) == SET){
+			//软件消抖
 		vTaskDelay(20);
 			if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8) == SET){
 				while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8) == SET) taskYIELD();
 				button3State = !button3State;
-				bAllowCan = !bAllowCan;
+				bAllowCan = !bAllowCan;		// 关掉/开启can回环防止干扰
 			}
 		}
 		if(button3State){
+			// 制造噪音
 				noise = 0.1 + (2.0 * rand() / RAND_MAX - 1.0);
 				raw = sqrt(x) + noise;
 				x += 0.5;
 				if(x > 10.0) x = 0.0;
+			// 滤波
 				current_filtered = ALPHA * raw + (1 - ALPHA) * last_filtered;
 				last_filtered = current_filtered;
+			// 计算极差
 				if(current_filtered > max) max = current_filtered;
 				if(current_filtered < min) min = current_filtered;
 				range = max - min;
+			// 将数据塞进结构体,准备发出去
 				sendFrame.fdata[0] = (float)current_filtered;
 			  sendFrame.fdata[1] = (float)range;
+			// 按照vofa格式的数据尾部
 			  memcpy(sendFrame.tail,framtail,sizeof(framtail));
+			// 利用互斥量等待空闲
 				if(xSemaphoreTake(xUartMutex,portMAX_DELAY) == pdPASS){
 					while(bUartDmaIdle == 0) taskYIELD();
 					bUartDmaIdle = 0;
@@ -336,9 +347,9 @@ void NoisyTask(void *parames){
 		vTaskDelay(500);
 	}
 }
-
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
     if(huart == &huart2){
+			// 在回调函数中,将dma状态恢复
         bUartDmaIdle = 1;
     }
 }
