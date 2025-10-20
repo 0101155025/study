@@ -255,9 +255,11 @@ void CAN_SendData(void){
 	/* 有时间写个错误处理 */
 	};
 }
+// 收到数据后存到RxHeader和RxData
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
   HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &RxHeader, RxData);
 }
+// 三个邮箱发送完数据后的中断,这里用来发送下一轮数据
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan)
 {
 	HAL_UART_Transmit(&huart2,CAN_TxData,sizeof(CAN_TxData), 100);
