@@ -18,6 +18,14 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+# 取消优化
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")  # 适用于 GCC/Clang（STM32 常用 GCC）
+    add_compile_options(-O0)  # 全局设置 C 编译优化为 -O0
+elseif(MSVC)  # 适用于 MSVC 编译器（较少用于 STM32）
+    add_compile_options(/Od)
+endif()
+
+
 # Set the project name
 set(CMAKE_PROJECT_NAME CRITICAL)
 
