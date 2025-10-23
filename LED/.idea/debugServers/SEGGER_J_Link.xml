@@ -1,0 +1,13 @@
+<component name="DebugServers">
+  <jlink-debug-target name="SEGGER J-Link" uniqueID="f56b6aba-4b5a-4520-8298-204912887402" selected="true">
+    <debugger version="1">
+      <debugger kind="GDB">D:\CubeCLT\STM32CubeCLT_1.19.0\GNU-tools-for-STM32\bin\arm-none-eabi-gdb.exe</debugger>
+      <env />
+    </debugger>
+    <gdbserver exe="$PROJECT_DIR$/../../../JLink/JLink/JLinkGDBServerCL.exe" />
+    <console enabled="false" port="2334" />
+    <target device="STM32F103C8" reset-before="false" />
+    <connection port="4444" warmup-ms="500" />
+    <swo />
+  </jlink-debug-target>
+</component>

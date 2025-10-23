@@ -1,0 +1,112 @@
+T2D6C 010:903.806   SEGGER J-Link V7.22b Log File
+T2D6C 010:903.877   DLL Compiled: Jun 17 2021 17:22:49
+T2D6C 010:903.883   Logging started @ 2025-10-09 03:38
+T2D6C 010:903.888 - 13.267ms
+T2D6C 010:903.895 JLINK_SetWarnOutHandler(...)
+T2D6C 010:903.900 - 0.006ms
+T2D6C 010:903.911 JLINK_OpenEx(...)
+T2D6C 010:906.095   Firmware: J-Link V9 compiled May  7 2021 16:26:12
+T2D6C 010:906.995   Firmware: J-Link V9 compiled May  7 2021 16:26:12
+T2D6C 010:907.099   Decompressing FW timestamp took 79 us
+T2D6C 010:916.423   Hardware: V9.70
+T2D6C 010:916.457   S/N: 609788888
+T2D6C 010:916.466   OEM: SEGGER
+T2D6C 010:916.474   Feature(s): GDB, RDI, FlashBP, FlashDL, JFlash
+T2D6C 010:919.192   TELNET listener socket opened on port 19021
+T2D6C 010:921.560   WEBSRV Starting webserver
+T2D6C 010:921.705   WEBSRV Webserver running on local port 19080
+T2D6C 010:921.716 - 17.807ms returns "O.K."
+T2D6C 010:921.728 JLINK_GetEmuCaps()
+T2D6C 010:921.733 - 0.007ms returns 0xB9FF7BBF
+T2D6C 010:921.741 JLINK_TIF_GetAvailable(...)
+T2D6C 010:922.424 - 0.690ms
+T2D6C 010:922.438 JLINK_SetErrorOutHandler(...)
+T2D6C 010:922.442 - 0.006ms
+T2D6C 010:922.452 JLINK_ExecCommand("ProjectFile = "D:\CubeMX\Project\CAN\MDK-ARM\JLinkSettings.ini"", ...). 
+T2D6C 010:923.399 - 0.953ms returns 0x00
+T2D6C 010:924.138 JLINK_ExecCommand("Device = STM32F103C8", ...). 
+T2D6C 010:924.355   Device "STM32F103C8" selected.
+T2D6C 010:924.869 - 0.719ms returns 0x00
+T2D6C 010:924.891 JLINK_GetHardwareVersion()
+T2D6C 010:924.899 - 0.011ms returns 97000
+T2D6C 010:924.908 JLINK_GetDLLVersion()
+T2D6C 010:924.915 - 0.010ms returns 72202
+T2D6C 010:924.924 JLINK_GetOEMString(...)
+T2D6C 010:924.933 JLINK_GetFirmwareString(...)
+T2D6C 010:924.944 - 0.014ms
+T2D6C 010:924.952 JLINK_GetDLLVersion()
+T2D6C 010:924.956 - 0.006ms returns 72202
+T2D6C 010:924.961 JLINK_GetCompileDateTime()
+T2D6C 010:924.966 - 0.007ms
+T2D6C 010:924.973 JLINK_GetFirmwareString(...)
+T2D6C 010:924.977 - 0.006ms
+T2D6C 010:924.983 JLINK_GetHardwareVersion()
+T2D6C 010:924.987 - 0.006ms returns 97000
+T2D6C 010:924.993 JLINK_GetSN()
+T2D6C 010:924.998 - 0.007ms returns 609788888
+T2D6C 010:925.004 JLINK_GetOEMString(...)
+T2D6C 010:925.011 JLINK_TIF_Select(JLINKARM_TIF_SWD)
+T2D6C 010:927.493 - 2.490ms returns 0x00
+T2D6C 010:927.509 JLINK_HasError()
+T2D6C 010:927.519 JLINK_SetSpeed(5000)
+T2D6C 010:928.116 - 0.602ms
+T2D6C 010:928.497 JLINK_HasError()
+T2D6C 010:928.517 JLINK_SetResetType(JLINKARM_RESET_TYPE_NORMAL)
+T2D6C 010:928.524 - 0.011ms returns JLINKARM_RESET_TYPE_NORMAL
+T2D6C 010:928.533 JLINK_Reset()
+T2D6C 010:929.225   InitTarget() start
+T2D6C 010:929.251    J-Link Script File: Executing InitTarget()
+T2D6C 011:033.760   Can not attach to CPU. Trying connect under reset.
+T2D6C 011:235.918   RESET (pin 15) high, but should be low. Please check target hardware.
+T2D6C 011:390.508   Connecting to CPU via connect under reset failed.
+T2D6C 011:441.372   InitTarget() end
+T2D6C 011:644.301   RESET (pin 15) high, but should be low. Please check target hardware.
+T2D6C 011:705.265   InitTarget() start
+T2D6C 011:705.315    J-Link Script File: Executing InitTarget()
+T2D6C 011:809.232   Can not attach to CPU. Trying connect under reset.
+T2D6C 012:011.674   RESET (pin 15) high, but should be low. Please check target hardware.
+T2D6C 012:165.517   Connecting to CPU via connect under reset failed.
+T2D6C 012:216.321   InitTarget() end
+T2D6C 012:216.362 - 1287.833ms
+T2D6C 012:216.389 JLINK_GetId()
+T2D6C 012:217.158   InitTarget() start
+T2D6C 012:217.182    J-Link Script File: Executing InitTarget()
+T2D6C 012:321.114   Can not attach to CPU. Trying connect under reset.
+T2D6C 012:523.669   RESET (pin 15) high, but should be low. Please check target hardware.
+T2D6C 012:677.590   Connecting to CPU via connect under reset failed.
+T2D6C 012:728.384   InitTarget() end
+T2D6C 012:930.544   RESET (pin 15) high, but should be low. Please check target hardware.
+T2D6C 012:993.066   InitTarget() start
+T2D6C 012:993.102    J-Link Script File: Executing InitTarget()
+T2D6C 013:097.088   Can not attach to CPU. Trying connect under reset.
+T2D6C 013:300.044   RESET (pin 15) high, but should be low. Please check target hardware.
+T2D6C 013:453.425   Connecting to CPU via connect under reset failed.
+T2D6C 013:504.263   InitTarget() end
+T2D6C 013:504.292 - 1287.907ms returns 0x00000000
+T2D6C 013:504.315 JLINK_GetId()
+T2D6C 013:504.949   InitTarget() start
+T2D6C 013:504.965    J-Link Script File: Executing InitTarget()
+T2D6C 013:609.422   Can not attach to CPU. Trying connect under reset.
+T2D6C 013:811.419   RESET (pin 15) high, but should be low. Please check target hardware.
+T2D6C 013:965.424   Connecting to CPU via connect under reset failed.
+T2D6C 014:016.117   InitTarget() end
+T2D6C 014:218.670   RESET (pin 15) high, but should be low. Please check target hardware.
+T2D6C 014:279.789   InitTarget() start
+T2D6C 014:279.832    J-Link Script File: Executing InitTarget()
+T2D6C 014:384.423   Can not attach to CPU. Trying connect under reset.
+T2D6C 014:585.795   RESET (pin 15) high, but should be low. Please check target hardware.
+T2D6C 014:739.423   Connecting to CPU via connect under reset failed.
+T2D6C 014:790.350   InitTarget() end
+T2D6C 014:790.387 - 1286.076ms returns 0x00000000
+T2D6C 014:792.418 JLINK_GetFirmwareString(...)
+T2D6C 014:792.431 - 0.016ms
+T2D6C 015:428.882 JLINK_SWO_Control(JLINKARM_SWO_CMD_GET_SPEED_INFO, ...)
+T2D6C 015:429.642 - 0.774ms returns 0x00
+T2D6C 015:429.662 JLINK_SWO_Control(JLINKARM_SWO_CMD_GET_SPEED_INFO, ...)
+T2D6C 015:430.384 - 0.725ms returns 0x00
+T2D6C 015:430.509 JLINK_SWO_Control(JLINKARM_SWO_CMD_GET_SPEED_INFO, ...)
+T2D6C 015:431.280 - 0.776ms returns 0x00
+T2D6C 020:768.390 JLINK_Close()
+T2D6C 020:780.350 - 11.988ms
+T2D6C 020:780.383   
+T2D6C 020:780.390   Closed
