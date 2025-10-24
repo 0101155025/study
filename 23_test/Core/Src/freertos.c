@@ -70,7 +70,9 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+void buttonTask(void *parames);
+void stateTask(void *parames);
+void LEDTask(void *parames);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -109,6 +111,9 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+	xTaskCreate(buttonTask,"buttonTask",128,NULL,osPriorityNormal,NULL);
+	xTaskCreate(stateTask,"stateTask",128,NULL,osPriorityNormal,NULL);
+	xTaskCreate(LEDTask,"LEDTask",128,NULL,osPriorityNormal,NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -138,20 +143,20 @@ void StartDefaultTask(void *argument)
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 void buttonTask(void *parames){
-	uint8_t curTime = 0;
-	uint8_t lastTime = 0;
+	uint32_t curTime = 0;
+	uint32_t lastTime = 0;
 	int pinNum = 0;
 	for(;;){
-		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4) == GPIO_PIN_SET){
+		if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_4) == GPIO_PIN_RESET){
 			vTaskDelay(20);
-			if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4) == GPIO_PIN_SET){
-				while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4) == GPIO_PIN_SET) taskYIELD();
+			if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_4) == GPIO_PIN_RESET){
+				while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_4) == GPIO_PIN_RESET) taskYIELD();
 				lastTime = HAL_GetTick();
 				pinNum++;
 			}else vTaskDelay(50);
 		}else{
 			curTime = HAL_GetTick();
-			if(curTime - lastTime > 2000){
+			if(curTime - lastTime > 1000){
 				taskENTER_CRITICAL();
 				g_pinNum = pinNum;
 				taskEXIT_CRITICAL();
@@ -175,25 +180,27 @@ void stateTask(void *parames){
 			state = COMPLETE;
 			taskEXIT_CRITICAL();
 		}else{
-			if(pinNum == step[curStep]){
-				taskENTER_CRITICAL();
-				switch(pinNum){
-					case 1: state = ONE;break;
-					case 2: state = TWO;break;
-					case 3: state = THREE;break;
-					case 4: state = FOUR;break;
-					case 5: state = FIVE;break;
-					case 6: state = SIX;break;
-					case 7: state = SEVEN;break;
-					case 8: state = EIGHT;break;
+			if(pinNum != 0){
+				if(pinNum == step[curStep]){
+					taskENTER_CRITICAL();
+					switch(pinNum){
+						case 1: state = ONE;  break;
+						case 2: state = TWO;  break;
+						case 3: state = THREE;break;
+						case 4: state = FOUR; break;
+						case 5: state = FIVE; break;
+						case 6: state = SIX;  break;
+						case 7: state = SEVEN;break;
+						case 8: state = EIGHT;break;
+					}
+					taskEXIT_CRITICAL();
+					curStep++;
+				}else{
+					taskENTER_CRITICAL();
+					state = WRONG;
+					taskEXIT_CRITICAL();
+					curStep = 0;
 				}
-				taskEXIT_CRITICAL();
-				curStep++;
-			}else{
-				taskENTER_CRITICAL();
-				state = WRONG;
-				taskEXIT_CRITICAL();
-				curStep = 0;
 			}
 		}
 		vTaskDelay(50);
@@ -206,34 +213,51 @@ void LEDTask(void *parames){
 		taskENTER_CRITICAL();
 		tempState = state;
 		taskEXIT_CRITICAL();
-		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_6) == GPIO_PIN_SET){
-			switch(tempState){
-				case EIGHT: 
-				case SEVEN:
-				case SIX:
-				case FIVE:
-				case FOUR:
-				case THREE:
-				case TWO:
-				case ONE:
-					for(int i = 0;i < tempState;i++){
-						HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_SET);
-						vTaskDelay(1000);
-						HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_RESET);
-						vTaskDelay(1000);
-					}
-					break;
-				case WRONG:
-						while(tempState == WRONG){
+		if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_2) == GPIO_PIN_RESET){
+			vTaskDelay(20);
+			if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_2) == GPIO_PIN_RESET){
+				while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_2) == GPIO_PIN_RESET) taskYIELD();
+				switch(tempState){
+					case EIGHT: 
+					case SEVEN:
+					case SIX:
+					case FIVE:
+					case FOUR:
+					case THREE:
+					case TWO:
+					case ONE:
+						for(int i = 0;i < tempState;i++){
+							HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_SET);
+							vTaskDelay(1000);
+							HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_RESET);
+							vTaskDelay(1000);
+						}
+						break;
+					case WRONG:
+							while(tempState == WRONG){
+								taskENTER_CRITICAL();
+								tempState = state;
+								taskEXIT_CRITICAL();
+								if(tempState != WRONG) break;
+								HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,GPIO_PIN_SET);
+								vTaskDelay(1000);
+								HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,GPIO_PIN_RESET);
+								vTaskDelay(1000);
+							}
+						break;
+					case COMPLETE:
+						for(int j = 0;j < 3;j++){
+							HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_SET);
 							HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,GPIO_PIN_SET);
 							vTaskDelay(1000);
+							HAL_GPIO_WritePin(GPIOA,GPIO_PIN_8,GPIO_PIN_RESET);
 							HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,GPIO_PIN_RESET);
 							vTaskDelay(1000);
 						}
-					break;
-				default :
-					break;
+					default :
+						break;
 				}
+			}
 		}
 		vTaskDelay(50);
 	}
