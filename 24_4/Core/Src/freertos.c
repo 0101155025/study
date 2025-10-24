@@ -74,6 +74,7 @@ void CAN_SendData(void);
 void CAN_Filter_Init(void);
 void CANTask(void *parames);
 void TransTask(void *parames);
+void TxTask(void *parames);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -114,6 +115,7 @@ void MX_FREERTOS_Init(void) {
   /* add threads, ... */
 	xTaskCreate(CANTask,"CANTask",128,NULL,osPriorityNormal,NULL);
 	xTaskCreate(TransTask,"TransTask",128,NULL,osPriorityNormal,NULL);
+	xTaskCreate(TxTask,"TxTask",128,NULL,osPriorityNormal,NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -271,6 +273,21 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 		uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
 		dmaState = 1;
 		taskEXIT_CRITICAL_FROM_ISR(uxSavedInterruptStatus);
+	}
+}
+void TxTask(void *parames){
+	uint8_t MSG[] = "Maybe there are five thousand roses in the world as same as you, but only you are my unique rose.\nHappy everyday\n";
+	for(;;){
+		taskENTER_CRITICAL();
+		if(dmaState == 1){
+			dmaState = 0;
+			taskEXIT_CRITICAL();
+			HAL_UART_Transmit_DMA(&huart2,MSG,sizeof(MSG) - 1);
+			vTaskDelay(2000);
+		}else{
+			taskEXIT_CRITICAL();
+			vTaskDelay(50);
+		}
 	}
 }
 /* USER CODE END Application */
