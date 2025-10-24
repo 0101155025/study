@@ -242,7 +242,7 @@ void TransTask(void *parames){
 			taskENTER_CRITICAL();
 			if(canState == 1){
 				canState = 0;
-//				tempHeader = RxHeader;
+				//tempHeader = RxHeader;
 				tempAngle += RxData[0];
 				tempAngle -= RxData[1];
 				tempSpeed += RxData[2];
@@ -265,7 +265,7 @@ void TransTask(void *parames){
 		vTaskDelay(50);
 	}
 }
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 	if(huart == &huart2){
 		UBaseType_t uxSavedInterruptStatus; //创建变量
 		uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
