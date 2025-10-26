@@ -1,0 +1,25 @@
+--cpu Cortex-M3
+"time_problem\startup_stm32f103xb.o"
+"time_problem\main.o"
+"time_problem\gpio.o"
+"time_problem\tim.o"
+"time_problem\stm32f1xx_it.o"
+"time_problem\stm32f1xx_hal_msp.o"
+"time_problem\stm32f1xx_hal_gpio_ex.o"
+"time_problem\stm32f1xx_hal_tim.o"
+"time_problem\stm32f1xx_hal_tim_ex.o"
+"time_problem\stm32f1xx_hal.o"
+"time_problem\stm32f1xx_hal_rcc.o"
+"time_problem\stm32f1xx_hal_rcc_ex.o"
+"time_problem\stm32f1xx_hal_gpio.o"
+"time_problem\stm32f1xx_hal_dma.o"
+"time_problem\stm32f1xx_hal_cortex.o"
+"time_problem\stm32f1xx_hal_pwr.o"
+"time_problem\stm32f1xx_hal_flash.o"
+"time_problem\stm32f1xx_hal_flash_ex.o"
+"time_problem\stm32f1xx_hal_exti.o"
+"time_problem\system_stm32f1xx.o"
+--strict --scatter "time_problem\time_problem.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "time_problem.map" -o time_problem\time_problem.axf
