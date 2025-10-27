@@ -178,17 +178,11 @@ void ProcessQueueTask(void *parames)
 }
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-  if (huart == &huart2)
-  {
-    DmaRxCplt = 1;
-  }
+  if (huart == &huart2) DmaRxCplt = 1;
 }
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
-  if (huart == &huart2)
-  {
-    DmaTxCplt = 1;
-  }
+  if (huart == &huart2) DmaTxCplt = 1;
 }
 /* USER CODE END Application */
 

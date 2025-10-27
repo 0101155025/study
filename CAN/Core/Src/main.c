@@ -74,7 +74,6 @@ uint8_t CAN_Send_Data(CAN_HandleTypeDef *hcan,uint16_t ID,uint8_t *Data,uint8_t 
 	uint32_t used_mailbox;
 	// 检测关键传参
 	assert_param(hcan != NULL);
-	
 	tx_header.StdId = ID;
 	tx_header.ExtId = 0;
 	tx_header.IDE = 0;
@@ -179,7 +178,7 @@ int main(void)
   MX_CAN_Init();
   /* USER CODE BEGIN 2 */
 	CAN_Init(&hcan);
-	CAN_Filter_Mask_Config(&hcan,CAN_FILTER(13) | CAN_FIFO_1 | CAN_STDID | CAN_DATA_TYPE,0x114,0x7ff);
+	CAN_Filter_Mask_Config(&hcan,CAN_FILTER(0) | CAN_FIFO_0 | CAN_STDID | CAN_DATA_TYPE,0x114,0x7ff);
   /* USER CODE END 2 */
 
   /* Infinite loop */

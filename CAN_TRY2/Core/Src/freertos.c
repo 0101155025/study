@@ -138,21 +138,20 @@ void StartDefaultTask(void *argument)
 void CAN_SendData(void){
 	uint32_t lastLightOffTime = HAL_GetTick();
 	uint32_t current_time;
-		for (int i = 0;i < 5;i++)
-		{
-			current_time = HAL_GetTick();
-			if (current_time - lastLightOffTime < 2000) vTaskDelay(2000 - (current_time - lastLightOffTime));
-			TxHeader.StdId = 0x300 + i;         // 标准帧id
-			TxHeader.DLC = 2;  							// 数据长度
-			TxHeader.ExtId = 0;							// 扩展帧id
-			TxHeader.IDE = CAN_ID_STD;      // 标准帧还是扩展帧
-			TxHeader.RTR = CAN_RTR_DATA;	 // 是标准帧还是远程帧
-			if(HAL_CAN_AddTxMessage(&hcan,&TxHeader,CAN_TxData,&TxMailBox) != HAL_OK){
-			/* 有时间写个错误处理 */
-			};
-			lastLightOffTime = HAL_GetTick();
-		}
-
+	for (int i = 0;i < 5;i++)
+	{
+		current_time = HAL_GetTick();
+		if (current_time - lastLightOffTime < 2000) vTaskDelay(2000 - (current_time - lastLightOffTime));
+		TxHeader.StdId = 0x300 + i;         // 标准帧id
+		TxHeader.DLC = 2;  							// 数据长度
+		TxHeader.ExtId = 0;							// 扩展帧id
+		TxHeader.IDE = CAN_ID_STD;      // 标准帧还是扩展帧
+		TxHeader.RTR = CAN_RTR_DATA;	 // 是标准帧还是远程帧
+		if(HAL_CAN_AddTxMessage(&hcan,&TxHeader,CAN_TxData,&TxMailBox) != HAL_OK){
+		/* 有时间写个错误处理 */
+		};
+		lastLightOffTime = HAL_GetTick();
+	}
 }
 // 收到数据后存到RxHeader和RxData
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan){
