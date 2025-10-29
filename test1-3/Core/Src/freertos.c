@@ -196,6 +196,7 @@ void stateTask(void *parames){
 					}else{
 						__HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,0);
 					}
+					break;
 			case NONE:
 				break;
 			case PWM:
