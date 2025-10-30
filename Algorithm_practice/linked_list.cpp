@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 typedef int ElemType;
@@ -205,6 +206,70 @@ const ListNode *sameSuffix(const ListNode *head1,const ListNode *head2)
     return (fast == slow) ? fast : nullptr;
 }
 
+void removeSameNode(ListNode *head,int n)
+{
+    int *p = new int[n + 1];
+    for (int i = 0;i < n + 1;i++)
+        p[i] = 0;
+    ListNode *curr = head->next;
+    while (curr->next)
+    {
+        int num = fabs(curr->next->val);
+        if (p[num] == 0)
+        {
+            p[num]++;
+            curr = curr->next;
+        }
+        else
+        {
+            ListNode *temp = curr->next;
+            curr->next = temp->next;
+            delete temp;
+        }
+    }
+    delete[] p;
+}
+
+void reList(ListNode *head)
+{
+    if (head == nullptr || head->next == nullptr)
+    {
+        cerr << "The list is empty" << endl;
+        return;
+    }
+    ListNode *fast = head->next;
+    ListNode *slow = head;
+    while (fast && fast->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    ListNode *first = nullptr;
+    ListNode *second = slow->next;
+    slow->next = nullptr;
+    ListNode *third = nullptr;
+    while (second)
+    {
+        third = second->next;
+        second->next = first;
+        first = second;
+        second = third;
+    }
+    ListNode *p1 = head;
+    ListNode *q1 = first;
+    ListNode *p2,*q2;
+    while (p1 && q1)
+    {
+        p2 = p1->next;
+        q2 = q1->next;
+        p1->next = q1;
+        q1->next = p2;
+        p1 = p2;
+        q1 = q2;
+    }
+    if (q1 != nullptr) p1->next = q1;
+}
+
 int main() {
     ListNode *head = new ListNode();
     headInsert(head, 1);
@@ -261,11 +326,23 @@ int main() {
         cout << "the common suffix of the two lists is:" << commonNode->val << endl;
     else cout << "No common suffix found" << endl;
 
+    //删除链表
     p->next = nullptr;
     deleteList(head1);
     deleteList(head2);
     head1 = nullptr;
     head2 = nullptr;
 
+    ListNode *head3 = new ListNode();
+    tailInsert(head3,1);
+    tailInsert(head3,2);
+    tailInsert(head3,3);
+    tailInsert(head3,4);
+    tailInsert(head3,5);
+    cout << "List3 content:" << endl;
+    display(head3);
+    reList(head3);
+    cout << "after reversing the list:" << endl;
+    display(head3);
     return 0;
 }
