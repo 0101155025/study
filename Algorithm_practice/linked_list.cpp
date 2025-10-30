@@ -118,8 +118,12 @@ void deletePos(ListNode *head,int pos)
         }
         p = p->next;
     }
+    if (p->next == nullptr)
+    {
+        cerr << "Invalid pos" << endl;
+        return;
+    }
     ListNode *temp = p->next;
-    if (temp == nullptr || temp->next == nullptr) cerr << "Invalid pos" << endl;
     p->next = temp->next;
     delete temp;
 }
@@ -130,6 +134,25 @@ void display(ListNode* L)
     for (auto p = L->next;p != nullptr;p = p->next)
         cout << p->val << " ";
     cout << endl;
+}
+
+int countDown(ListNode *head,int repos)
+{
+    if (head ==  nullptr || head->next == nullptr)
+    {
+        cerr << "The list is empty" << endl;
+        return -1;
+    }
+    int len = countLength(head);
+    if (repos > len || repos < 1)
+    {
+        cerr << "Invalid repos" << endl;
+        return -1;
+    }
+    ListNode *p = head->next;
+    for (int i = 0;i < len - repos;i++)
+        p = p->next;
+    return p->val;
 }
 
 int main() {
