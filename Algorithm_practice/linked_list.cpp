@@ -1,36 +1,63 @@
 #include <iostream>
 using namespace std;
-typedef struct ListNode
+
+struct ListNode
 {
     int val;
-    struct ListNode* next;
-} ListNode;
-ListNode *InitList(int val)
+    ListNode* next;
+    ListNode()
+    {
+        val = 0;
+        next = nullptr;
+    }
+};
+
+ListNode* headInsert(ListNode *L, int val)
 {
+    if (L == nullptr) return nullptr;
+    ListNode *node = new ListNode();
+    node->val = val;
+    node->next = L->next;
+    L->next = node;
+    return node;
+}
+
+ListNode *tailInsert(ListNode *head,int val)
+{
+    if (head == nullptr) return nullptr;
+    ListNode *tail = head;
+    while (tail->next != nullptr) tail = tail->next;
     ListNode *node = new ListNode();
     node->val = val;
     node->next = nullptr;
+    tail->next = node;
     return node;
 }
-ListNode* headInsert(ListNode *L, int val)
+
+int insert(ListNode* head,int val,int pos)
 {
-    ListNode *note = new ListNode();
-    note->val = val;
-    note->next = L->next;
-    L->next = note;
-    return note;
+    if (head == nullptr || pos < 1) return -1;
+    ListNode *p = head;
+    for (int i = 1;i < pos;i++)
+    {
+        if (p == nullptr) return -1;
+        p = p->next;
+    }
+    ListNode *q = new ListNode();
+    q->val = val;
+    q->next = p->next;
+    p->next = q;
+    return val;
 }
+
 ListNode *traversal(ListNode *L, int pos)
 {
-    if (L == nullptr || pos < 1) return L;
-    ListNode *p = L;
-    while (p && pos)
-    {
-        p = p->next;
-        pos--;
-    }
-    return p;
+    if (L == nullptr || pos < 1) return nullptr;
+    const ListNode *p = L;
+    while (p && pos--) p = p->next;
+    return const_cast<ListNode*>(p);
 }
+
 int countLength(ListNode *head)
 {
     if (head == nullptr) return 0;
@@ -43,19 +70,26 @@ int countLength(ListNode *head)
     }
     return cnt;
 }
-ListNode *tailInsert(ListNode *head,int val)
+
+void  reverseList(ListNode *head)
 {
-    if (head == nullptr) return nullptr;
-    ListNode *tail = head;
-    while (tail->next != nullptr) tail = tail->next;
-    ListNode *note = new ListNode();
-    note->val = val;
-    note->next = nullptr;
-    tail->next = note;
-    return note;
+    if (head == nullptr || head->next == nullptr) return;
+    ListNode *prev = nullptr;
+    ListNode *curr = head->next;
+    ListNode *next;
+    while (curr)
+    {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    head->next = prev;
 }
+
 void deleteList(ListNode *L)
 {
+    if (L == nullptr) return;
     ListNode *p = L->next;
     while (p)
     {
@@ -65,33 +99,47 @@ void deleteList(ListNode *L)
     }
     delete L;
 }
+
+void deletePos(ListNode *head,int pos)
+{
+    if (head == nullptr || head->next == nullptr) return;
+    if (pos < 1)
+    {
+        cerr << "Invalid pos" << endl;
+        return;
+    }
+    ListNode *p = head;
+    for (int i = 1;i < pos;i++)
+    {
+        if (p->next == nullptr)
+        {
+            cerr << "Invalid pos" << endl;
+            return;
+        }
+        p = p->next;
+    }
+    ListNode *temp = p->next;
+    if (temp == nullptr || temp->next == nullptr) cerr << "Invalid pos" << endl;
+    p->next = temp->next;
+    delete temp;
+}
+
 void display(ListNode* L)
 {
-    for (auto p = L;p!=nullptr;p=p->next)
-    {
+    if (L == nullptr) return;
+    for (auto p = L->next;p != nullptr;p = p->next)
         cout << p->val << " ";
-    }
     cout << endl;
 }
-int insert(ListNode* head,int val,int pos)
-{
-    ListNode *p = new ListNode();
-    while (p && pos - 1)
-    {
-        p = p->next;
-        pos--;
-    }
-    ListNode *q = new ListNode();
-    p->next = q;
-    q->val = val;
-    q->next = p->next;
-    return val;
-}
+
 int main() {
-    ListNode *head = InitList(0);
+    ListNode *head = new ListNode();
     headInsert(head, 1);
     tailInsert(head,2);
-    display(head->next);
+    insert(head,3,2);
+    cout << "the content of the list:" << endl;
+    display(head);
+    cout << "the length of the list:" << countLength(head) << endl;
     deleteList(head);
     head = nullptr;
     return 0;
