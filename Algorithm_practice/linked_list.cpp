@@ -270,6 +270,19 @@ void reList(ListNode *head)
     if (q1 != nullptr) p1->next = q1;
 }
 
+bool isCycle(ListNode *head)
+{
+    ListNode *fast = head->next;
+    ListNode *slow = head->next;
+    while (fast && fast->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+        if (fast == slow) return true;
+    }
+    return false;
+}
+
 int main() {
     ListNode *head = new ListNode();
     headInsert(head, 1);
@@ -344,5 +357,18 @@ int main() {
     reList(head3);
     cout << "after reversing the list:" << endl;
     display(head3);
+    deleteList(head3);
+    head3 = nullptr;
+
+    // 测试是否有环
+    ListNode *head4 = new ListNode();
+    tailInsert(head4,1);
+    tailInsert(head4,2);
+    tailInsert(head4,3);
+    ListNode *temp = new ListNode();
+    tailInsert(head4,4);
+    tailInsert(head4,5);
+
+    cout << "is the list cycle:" << isCycle(head4) << endl;
     return 0;
 }

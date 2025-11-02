@@ -32,7 +32,6 @@
     <list default="true" id="0590a7c3-f7cd-4da1-95db-1068a58f88ab" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/linked_list.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/linked_list.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../test1/MDK-ARM/test1.uvguix.MR" beforeDir="false" afterPath="$PROJECT_DIR$/../test1/MDK-ARM/test1.uvguix.MR" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,6 +108,7 @@
       <workItem from="1761814710977" duration="1145000" />
       <workItem from="1761815872411" duration="1603000" />
       <workItem from="1761825341917" duration="2340000" />
+      <workItem from="1762080141326" duration="1623000" />
     </task>
     <servers />
   </component>
