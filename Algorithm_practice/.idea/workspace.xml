@@ -30,9 +30,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0590a7c3-f7cd-4da1-95db-1068a58f88ab" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/double_linked_list.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/stack.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/double_linked_list.exe" beforeDir="false" afterPath="$PROJECT_DIR$/double_linked_list.exe" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +65,7 @@
   "keyToString": {
     "C/C++ 文件.double_linked_list.cpp.executor": "Run",
     "C/C++ 文件.noj.cpp.executor": "Run",
+    "C/C++ 文件.stack.cpp.executor": "Run",
     "CMake Application.Algorithm_practice.executor": "Run",
     "CMake 应用程序.Algorithm_practice.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -87,13 +89,13 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="C/C++ 文件.double_linked_list.cpp">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+  <component name="RunManager" selected="C/C++ 文件.stack.cpp">
+    <configuration name="Algorithm_practice" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="Algorithm_practice" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Algorithm_practice" RUN_TARGET_NAME="Algorithm_practice">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Algorithm_practice" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="Algorithm_practice" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Algorithm_practice" RUN_TARGET_NAME="Algorithm_practice">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -110,13 +112,21 @@
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="stack.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="stack.cpp" CONFIG_NAME="stack.cpp">
+      <option name="sourceFile" value="stack.cpp" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <list>
+      <item itemvalue="C/C++ 文件.stack.cpp" />
       <item itemvalue="C/C++ 文件.double_linked_list.cpp" />
       <item itemvalue="C/C++ 文件.noj.cpp" />
       <item itemvalue="CMake 应用程序.Algorithm_practice" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="C/C++ 文件.stack.cpp" />
         <item itemvalue="C/C++ 文件.double_linked_list.cpp" />
         <item itemvalue="C/C++ 文件.noj.cpp" />
       </list>
@@ -145,6 +155,7 @@
       <workItem from="1762166430540" duration="495000" />
       <workItem from="1762173199160" duration="40000" />
       <workItem from="1762173299588" duration="3390000" />
+      <workItem from="1762177204319" duration="1705000" />
     </task>
     <servers />
   </component>
