@@ -3,7 +3,9 @@
 using namespace std;
 
 typedef int ElemType;
-
+/*
+ * 单链表的定义
+ */
 struct ListNode
 {
     ElemType val;
@@ -15,6 +17,12 @@ struct ListNode
     }
 };
 
+/*头插法
+ * L: 单链表的头指针
+ * val: 要插入的元素值
+ * 返回值: 插入的节点
+ */
+
 ListNode* headInsert(ListNode *L, ElemType val)
 {
     if (L == nullptr) return nullptr;
@@ -24,6 +32,12 @@ ListNode* headInsert(ListNode *L, ElemType val)
     L->next = node;
     return node;
 }
+
+/*尾插法
+ * head: 单链表的头指针
+ * val: 要插入的元素值
+ * 返回值: 插入的节点
+ */
 
 ListNode *tailInsert(ListNode *head,ElemType val)
 {
@@ -36,6 +50,13 @@ ListNode *tailInsert(ListNode *head,ElemType val)
     tail->next = node;
     return node;
 }
+
+/*在指定位置插入元素
+ * head: 单链表的头指针
+ * val: 要插入的元素值
+ * pos: 要插入的位置
+ * 返回值: 插入的元素值
+ */
 
 ElemType insert(ListNode* head,ElemType val,int pos)
 {
@@ -53,6 +74,13 @@ ElemType insert(ListNode* head,ElemType val,int pos)
     return val;
 }
 
+/*
+ * 遍历数组
+ * head: 单链表的头指针
+ * pos: 要遍历的位置
+ * 返回值: 遍历到的元素值
+ */
+
 ListNode *traversal(ListNode *L, int pos)
 {
     if (L == nullptr || pos < 1) return nullptr;
@@ -60,6 +88,12 @@ ListNode *traversal(ListNode *L, int pos)
     while (p && pos--) p = p->next;
     return const_cast<ListNode*>(p);
 }
+
+/*
+ * 统计单链表的长度
+ * head: 单链表的头指针
+ * 返回值: 单链表的长度
+ */
 
 int countLength(const ListNode *head)
 {
@@ -73,6 +107,11 @@ int countLength(const ListNode *head)
     }
     return cnt;
 }
+
+/*
+ * 反转单链表
+ * head: 单链表的头指针
+ */
 
 void  reverseList(ListNode *head)
 {
@@ -90,6 +129,11 @@ void  reverseList(ListNode *head)
     head->next = prev;
 }
 
+/*
+ * 删除单链表
+ * head: 单链表的头指针
+ */
+
 void deleteList(ListNode *L)
 {
     if (L == nullptr) return;
@@ -102,6 +146,12 @@ void deleteList(ListNode *L)
     }
     delete L;
 }
+
+/*
+ * 删除单链表指定位置的元素
+ * head: 单链表的头指针
+ * pos: 要删除的位置
+ */
 
 void deletePos(ListNode *head,int pos)
 {
@@ -131,6 +181,11 @@ void deletePos(ListNode *head,int pos)
     delete temp;
 }
 
+/*
+ * 打印单链表
+ * head: 单链表的头指针
+ */
+
 void display(const ListNode* L)
 {
     if (L == nullptr) return;
@@ -138,6 +193,13 @@ void display(const ListNode* L)
         cout << p->val << " ";
     cout << endl;
 }
+
+/*
+ * 从后往前数第pos个元素(遍历法)
+ * head: 单链表的头指针
+ * repos: 要数的位置
+ * 返回值: 从后往前数第pos个元素的值
+ */
 
 ElemType countDown1(const ListNode *head,int repos)
 {
@@ -158,9 +220,16 @@ ElemType countDown1(const ListNode *head,int repos)
     return p->val;
 }
 
+/*
+ * 从后往前数第pos个元素(双指针法)
+ * head: 单链表的头指针
+ * repos: 要数的位置
+ * 返回值: 从后往前数第pos个元素的值
+ */
+
 ElemType countDown2(const ListNode *head,int repos)
 {
-    if (head ==  nullptr || repos < 1)
+    if (head ==  nullptr || head->next == nullptr || repos < 1)
     {
         cerr << "Invalid repos" << endl;
         return -1;
@@ -184,6 +253,13 @@ ElemType countDown2(const ListNode *head,int repos)
     return slow->val;
 }
 
+/*
+ * 找到两个单链表的公共后缀节点(双指针法)
+ * head1: 第一个单链表的头指针
+ * head2: 第二个单链表的头指针
+ * 返回值: 公共后缀节点的指针
+ */
+
 const ListNode *sameSuffix(const ListNode *head1,const ListNode *head2)
 {
     if (head1 == nullptr || head2 == nullptr || head1->next == nullptr || head2->next == nullptr)
@@ -205,6 +281,12 @@ const ListNode *sameSuffix(const ListNode *head1,const ListNode *head2)
     }
     return (fast == slow) ? fast : nullptr;
 }
+
+/*
+ * 删除单链表中值相同的节点
+ * head: 单链表的头指针
+ * n: 链表长度,同时也是链表中的最大值
+ */
 
 void removeSameNode(ListNode *head,int n)
 {
@@ -229,6 +311,11 @@ void removeSameNode(ListNode *head,int n)
     }
     delete[] p;
 }
+
+/*
+ * 重新排列单链表(将链表的后半部分插入到前半部分中)
+ * head: 单链表的头指针
+ */
 
 void reList(ListNode *head)
 {
@@ -267,11 +354,22 @@ void reList(ListNode *head)
         p1 = p2;
         q1 = q2;
     }
-    if (q1 != nullptr) p1->next = q1;
+    if (p1 != nullptr && q1 != nullptr) p1->next = q1;
 }
+
+/*
+ * 判断单链表是否有环(双指针法)
+ * head: 单链表的头指针
+ * 返回值: 如果有环则返回true,否则返回false
+ */
 
 bool isCycle(ListNode *head)
 {
+    if (head == nullptr || head->next == nullptr)
+    {
+        cerr << "The list is empty" << endl;
+        return false;
+    }
     ListNode *fast = head->next;
     ListNode *slow = head->next;
     while (fast && fast->next)
@@ -281,6 +379,48 @@ bool isCycle(ListNode *head)
         if (fast == slow) return true;
     }
     return false;
+}
+
+/*
+ * 找到单链表中环的入口节点(双指针法)
+ * head: 单链表的头指针
+ * 返回值: 环的入口节点的指针
+ */
+
+ListNode *cycleHead(ListNode *head)
+{
+    if (head == nullptr || head->next == nullptr)
+    {
+        cerr << "The list is empty" << endl;
+        return nullptr;
+    }
+    ListNode *fast = head;
+    ListNode *slow = head;
+    while (fast && fast->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+        if (fast == slow)
+        {
+            int cnt = 1;
+            ListNode *temp = fast->next;
+            while (temp->next != slow)
+            {
+                temp = temp->next;
+                cnt++;
+            }
+            fast = head;
+            slow = head;
+            for (int i = 0;i < cnt;i++) fast = fast->next;
+            while (fast != slow)
+            {
+                fast = fast->next;
+                slow = slow->next;
+            }
+            return fast;
+        }
+    }
+    return nullptr;
 }
 
 int main() {
@@ -370,5 +510,10 @@ int main() {
     tailInsert(head4,5);
 
     cout << "is the list cycle:" << isCycle(head4) << endl;
+    if (temp != nullptr)
+    {
+        delete temp;
+        temp = nullptr;
+    }
     return 0;
 }
