@@ -235,9 +235,9 @@ int main() {
     cout << "is the list cycle:" << isCycle(head4) << endl;
     ListNode *pp = head4->next;
     int count = 0;
-    while (p != nullptr && count  < 10)
+    while (pp != nullptr && count  < 10)
     {
-        cout << pp->val << endl;
+        cout << pp->val << " ";
         pp = pp->next;
         count++;
     }
@@ -550,7 +550,7 @@ ListNode *cycleHead(ListNode *head)
         {
             int cnt = 1;
             ListNode *temp = fast->next;
-            while (temp->next != slow)
+            while (temp != slow)
             {
                 temp = temp->next;
                 cnt++;
