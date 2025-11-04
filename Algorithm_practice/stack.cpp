@@ -47,6 +47,19 @@ bool pop(Stack *s,ElemType *e);
 bool getTop(Stack *s,ElemType &e);
 
 /**
+ * @brief 销毁栈
+ *
+ * @param s 栈指针
+ */
+
+void DestroyStack(Stack *s)
+{
+    if (s == nullptr)
+        return;
+    s->top = -1;
+}
+
+/**
  * @brief 显示栈元素
  *
  * @param s 栈指针
@@ -95,7 +108,7 @@ bool pop(Stack *s,ElemType *e)
     if (s == nullptr || s->top == -1)
     {
         cerr << "Stack is empty" << endl;
-        return -1;
+        return false;
     }
     *e = s->data[s->top];
     s->top--;
