@@ -8,12 +8,17 @@ typedef int ElemType;
 // 队列的实现
 typedef struct Queue
 {
-    ElemType data[MAXSIZE];
+    ElemType *data;
     int front,rear;
     Queue()
     {
+        data = new ElemType[MAXSIZE];
         front = 0;
         rear = 0;
+    }
+    ~Queue()
+    {
+        delete[] data;
     }
 }Queue;
 
@@ -35,7 +40,7 @@ bool eQueue(Queue *q,ElemType e);
  * @return ElemType 出队元素
  */
 
-ElemType deQueue(Queue *s);
+ElemType deQueue(Queue *q);
 
 /**
  * @brief 判断队列是否为空
@@ -85,22 +90,13 @@ bool eQueue(Queue *q,ElemType e)
         cerr<<"the queue does not exist"<<endl;
         return false;
     }
-    if (q->rear >= MAXSIZE)
+    if ((q->rear + 1) % MAXSIZE == q->front)
     {
-        if (q->front == 0)
-        {
-            cerr<<"the queue is empty"<<endl;
-            return false;
-        }
-        else
-        {
-            for (int i = q->front; i < q->rear; i++) q->data[i - q->front] = q->data[i];
-            q->rear -= q->front;
-            q->front = 0;
-        }
+        cerr<<"the queue is full"<<endl;
+        return false;
     }
     q->data[q->rear] = e;
-    q->rear++;
+    q->rear = (q->rear + 1) % MAXSIZE;
     return true;
 }
 
@@ -117,19 +113,19 @@ ElemType deQueue(Queue *q)
         return -1;
     }
     ElemType e = q->data[q->front];
-    q->front++;
+    q->front = (q->front + 1) % MAXSIZE;
     return e;
 }
 
 
-bool isEmpty(Queue *s)
+bool isEmpty(Queue *q)
 {
-    if (s == nullptr)
+    if (q == nullptr)
     {
         cerr<<"the queue does not exist"<<endl;
         return false;
     }
-    if (s->front == s->rear)
+    if (q->front == q->rear)
         return true;
     else
         return false;
@@ -142,10 +138,8 @@ bool isFull(Queue *q)
         cerr<<"the queue does not exist"<<endl;
         return false;
     }
-    if (q->rear == MAXSIZE && q->front == 0)
-        return true;
-    else
-        return false;
+    if ((q->rear + 1) % MAXSIZE == q->front) return true;
+    else return false;
 }
 
 ElemType getTop(Queue *q)

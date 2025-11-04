@@ -30,10 +30,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0590a7c3-f7cd-4da1-95db-1068a58f88ab" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/Queue.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Stack.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/recursion.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stack.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/stack.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Queue.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Queue.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stack.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../笔记/~$笔记.docx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +60,9 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="34jKEHk05UFKROx2l3YXQo8K7Gr" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -66,6 +72,8 @@
     "C/C++ 文件.Queue.cpp.executor": "Run",
     "C/C++ 文件.double_linked_list.cpp.executor": "Run",
     "C/C++ 文件.noj.cpp.executor": "Run",
+    "C/C++ 文件.recursion.cpp.executor": "Run",
+    "C/C++ 文件.schoolHomework.c.executor": "Run",
     "C/C++ 文件.stack.cpp.executor": "Run",
     "CMake Application.Algorithm_practice.executor": "Run",
     "CMake 应用程序.Algorithm_practice.executor": "Run",
@@ -90,7 +98,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="C/C++ 文件.Queue.cpp">
+  <component name="RunManager" selected="C/C++ 文件.recursion.cpp">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
@@ -101,8 +109,25 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Algorithm_practice" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="Algorithm_practice" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Algorithm_practice" RUN_TARGET_NAME="Algorithm_practice">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Queue.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="Queue.cpp" CONFIG_NAME="Queue.cpp">
       <option name="sourceFile" value="Queue.cpp" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Queue.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="Queue.cpp" CONFIG_NAME="Queue.cpp">
+      <option name="sourceFile" value="Queue.cpp" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="double_linked_list.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="double_linked_list.cpp" CONFIG_NAME="double_linked_list.cpp">
+      <option name="sourceFile" value="double_linked_list.cpp" />
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
@@ -119,6 +144,24 @@
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="recursion.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="recursion.cpp" CONFIG_NAME="recursion.cpp">
+      <option name="sourceFile" value="recursion.cpp" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="schoolHomework.c" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="schoolHomework.c" CONFIG_NAME="schoolHomework.c">
+      <option name="sourceFile" value="schoolHomework.c" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="stack.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="stack.cpp" CONFIG_NAME="stack.cpp">
+      <option name="sourceFile" value="stack.cpp" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="stack.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="stack.cpp" CONFIG_NAME="stack.cpp">
       <option name="sourceFile" value="stack.cpp" />
       <method v="2">
@@ -126,18 +169,20 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="C/C++ 文件.recursion.cpp" />
+      <item itemvalue="C/C++ 文件.schoolHomework.c" />
       <item itemvalue="C/C++ 文件.Queue.cpp" />
       <item itemvalue="C/C++ 文件.double_linked_list.cpp" />
-      <item itemvalue="C/C++ 文件.noj.cpp" />
       <item itemvalue="C/C++ 文件.stack.cpp" />
       <item itemvalue="CMake 应用程序.Algorithm_practice" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="C/C++ 文件.recursion.cpp" />
         <item itemvalue="C/C++ 文件.Queue.cpp" />
+        <item itemvalue="C/C++ 文件.schoolHomework.c" />
         <item itemvalue="C/C++ 文件.stack.cpp" />
         <item itemvalue="C/C++ 文件.double_linked_list.cpp" />
-        <item itemvalue="C/C++ 文件.noj.cpp" />
       </list>
     </recent_temporary>
   </component>
@@ -168,6 +213,8 @@
       <workItem from="1762179017061" duration="395000" />
       <workItem from="1762213813747" duration="168000" />
       <workItem from="1762213994480" duration="1605000" />
+      <workItem from="1762260726055" duration="673000" />
+      <workItem from="1762262705000" duration="2837000" />
     </task>
     <servers />
   </component>
