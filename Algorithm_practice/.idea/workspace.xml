@@ -30,8 +30,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0590a7c3-f7cd-4da1-95db-1068a58f88ab" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MarsCodeWorkspaceAppSettings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TreeNode.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,38 +63,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;C/C++ 文件.Queue.cpp.executor&quot;: &quot;Run&quot;,
-    &quot;C/C++ 文件.double_linked_list.cpp.executor&quot;: &quot;Run&quot;,
-    &quot;C/C++ 文件.noj.cpp.executor&quot;: &quot;Run&quot;,
-    &quot;C/C++ 文件.recursion.cpp.executor&quot;: &quot;Run&quot;,
-    &quot;C/C++ 文件.schoolHomework.c.executor&quot;: &quot;Run&quot;,
-    &quot;C/C++ 文件.stack.cpp.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.Algorithm_practice.executor&quot;: &quot;Run&quot;,
-    &quot;CMake 应用程序.Algorithm_practice.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;D:/Project/Algorithm_practice/main.cpp&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "C/C++ 文件.Queue.cpp.executor": "Run",
+    "C/C++ 文件.TreeNode.cpp.executor": "Run",
+    "C/C++ 文件.double_linked_list.cpp.executor": "Run",
+    "C/C++ 文件.noj.cpp.executor": "Run",
+    "C/C++ 文件.recursion.cpp.executor": "Run",
+    "C/C++ 文件.schoolHomework.c.executor": "Run",
+    "C/C++ 文件.stack.cpp.executor": "Run",
+    "CMake Application.Algorithm_practice.executor": "Run",
+    "CMake 应用程序.Algorithm_practice.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "D:/Project/Algorithm_practice/main.cpp",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="C/C++ 文件.recursion.cpp">
+}]]></component>
+  <component name="RunManager" selected="C/C++ 文件.TreeNode.cpp">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Algorithm_practice" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="Algorithm_practice" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Algorithm_practice" RUN_TARGET_NAME="Algorithm_practice">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -116,20 +123,14 @@
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="double_linked_list.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="double_linked_list.cpp" CONFIG_NAME="double_linked_list.cpp">
-      <option name="sourceFile" value="double_linked_list.cpp" />
+    <configuration name="TreeNode.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="TreeNode.cpp" CONFIG_NAME="TreeNode.cpp">
+      <option name="sourceFile" value="TreeNode.cpp" />
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="double_linked_list.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="double_linked_list.cpp" CONFIG_NAME="double_linked_list.cpp">
       <option name="sourceFile" value="double_linked_list.cpp" />
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="noj.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="noj.cpp" CONFIG_NAME="noj.cpp">
-      <option name="sourceFile" value="noj.cpp" />
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
@@ -159,21 +160,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="C/C++ 文件.noj.cpp" />
+      <item itemvalue="C/C++ 文件.TreeNode.cpp" />
+      <item itemvalue="C/C++ 文件.Queue.cpp" />
       <item itemvalue="C/C++ 文件.recursion.cpp" />
       <item itemvalue="C/C++ 文件.schoolHomework.c" />
-      <item itemvalue="C/C++ 文件.Queue.cpp" />
-      <item itemvalue="C/C++ 文件.double_linked_list.cpp" />
       <item itemvalue="C/C++ 文件.stack.cpp" />
       <item itemvalue="CMake 应用程序.Algorithm_practice" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="C/C++ 文件.TreeNode.cpp" />
         <item itemvalue="C/C++ 文件.recursion.cpp" />
         <item itemvalue="C/C++ 文件.Queue.cpp" />
         <item itemvalue="C/C++ 文件.schoolHomework.c" />
         <item itemvalue="C/C++ 文件.stack.cpp" />
-        <item itemvalue="C/C++ 文件.double_linked_list.cpp" />
       </list>
     </recent_temporary>
   </component>
@@ -206,7 +206,9 @@
       <workItem from="1762213994480" duration="1605000" />
       <workItem from="1762260726055" duration="673000" />
       <workItem from="1762262705000" duration="2837000" />
-      <workItem from="1762421030875" duration="597000" />
+      <workItem from="1762421030875" duration="1339000" />
+      <workItem from="1762433322861" duration="9000" />
+      <workItem from="1762438076291" duration="2889000" />
     </task>
     <servers />
   </component>
