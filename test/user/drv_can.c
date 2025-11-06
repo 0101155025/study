@@ -19,8 +19,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 
-Struct_CAN_Manage_Object CAN1_Manage_Object = {0};
-Struct_CAN_Manage_Object CAN2_Manage_Object = {0};
+struct Struct_CAN_Manage_Object CAN1_Manage_Object = {0};
+struct Struct_CAN_Manage_Object CAN2_Manage_Object = {0};
 
 // CAN通信发送缓冲区
 uint8_t CAN1_0x1ff_Tx_Data[8];
@@ -178,7 +178,7 @@ void TIM_CAN_PeriodElapsedCallback()
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
     //接收缓冲区
-    static Struct_CAN_Rx_Buffer can_rx_buffer;
+    static struct Struct_CAN_Rx_Buffer can_rx_buffer;
 
     //选择回调函数
     if (hcan->Instance == CAN1)
@@ -201,7 +201,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
     //接收缓冲区
-    static Struct_CAN_Rx_Buffer can_rx_buffer;
+    static struct Struct_CAN_Rx_Buffer can_rx_buffer;
 
     //选择回调函数
     if (hcan->Instance == CAN1)

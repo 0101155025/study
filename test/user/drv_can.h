@@ -49,7 +49,7 @@ struct Struct_CAN_Rx_Buffer
  * @brief CAN通信接收回调函数数据类型
  *
  */
-typedef void (*CAN_Call_Back)(Struct_CAN_Rx_Buffer *);
+typedef void (*CAN_Call_Back)(struct Struct_CAN_Rx_Buffer *);
 
 /**
  * @brief CAN通信处理结构体
@@ -66,8 +66,8 @@ struct Struct_CAN_Manage_Object
 extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
 
-extern Struct_CAN_Manage_Object CAN1_Manage_Object;
-extern Struct_CAN_Manage_Object CAN2_Manage_Object;
+extern struct Struct_CAN_Manage_Object CAN1_Manage_Object;
+extern struct Struct_CAN_Manage_Object CAN2_Manage_Object;
 
 extern uint8_t CAN1_0x1ff_Tx_Data[];
 extern uint8_t CAN1_0x200_Tx_Data[];

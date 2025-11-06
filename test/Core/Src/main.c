@@ -42,6 +42,18 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 
+// 接收队列
+#define CAN_FIFO_0 (0 << 2)
+#define CAN_FIFO_1 (1 << 2)
+
+// 标准帧或扩展帧
+#define CAN_STDID (0 << 1)
+#define CAN_EXTID (1 << 1)
+
+// 数据帧或遥控帧
+#define CAN_DATA_TYPE (0 << 0)
+#define CAN_REMOTE_TYPE (1 << 0)
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -58,9 +70,9 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void Null_Call_Back(Struct_CAN_Rx_Buffer *Rx_Buffer){
 
-}
+void NULL_Call_Back(struct Struct_CAN_Rx_Buffer *Rx_Buffer){}
+
 /* USER CODE END 0 */
 
 /**
@@ -96,8 +108,8 @@ int main(void)
   MX_CAN2_Init();
   /* USER CODE BEGIN 2 */
 
-  BSP_Init(BSP_DC24_LD_ON);
-  CAN_Init(&hcan1, Null_Call_Back);
+  BSP_Init(BSP_DC24_LD_ON,0,0);
+  CAN_Init(&hcan1,NULL_Call_Back);
 
   /* USER CODE END 2 */
 
@@ -108,15 +120,15 @@ int main(void)
   {
     while(torque < 1000){
       torque += 50;
-      CAN1_0x200_Tx_Data(0) = torque >> 8;
-      CAN1_0x200_Tx_Data(1) = torque;
+      CAN1_0x200_Tx_Data[0] = torque >> 8;
+      CAN1_0x200_Tx_Data[1] = torque;
       CAN_Send_Data(&hcan1,0x200,CAN1_0x200_Tx_Data,8);
       HAL_Delay(50);
     }
     while(torque > -1000){
       torque -= 50;
-      CAN1_0x200_Tx_Data(0) = torque >> 8;
-      CAN1_0x200_Tx_Data(1) = torque;
+      CAN1_0x200_Tx_Data[0] = torque >> 8;
+      CAN1_0x200_Tx_Data[1] = torque;
       CAN_Send_Data(&hcan1,0x200,CAN1_0x200_Tx_Data,8);
       HAL_Delay(50);
     }

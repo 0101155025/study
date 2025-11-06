@@ -44,27 +44,27 @@
  * @brief 板上DC24工作状态
  *
  */
-enum Enum_BSP_DC24_Status
+typedef enum 
 {
     BSP_DC24_Status_DISABLED = 0,
     BSP_DC24_Status_ENABLED,
-};
+}Enum_BSP_DC24_Status;
 
 /**
  * @brief 板上LED工作状态
  *
  */
-enum Enum_BSP_LED_Status
+typedef enum 
 {
     BSP_LED_Status_ENABLED = 0,
     BSP_LED_Status_DISABLED,
-};
+}Enum_BSP_LED_Status;
 
 /* Exported variables --------------------------------------------------------*/
 
 /* Exported function declarations --------------------------------------------*/
 
-void BSP_Init(uint32_t Status, float IMU_Heater_Rate = 0, float Buzzer_Rate = 0);
+void BSP_Init(uint32_t Status, float IMU_Heater_Rate, float Buzzer_Rate);
 
 void BSP_DC24_LU(Enum_BSP_DC24_Status Status);
 void BSP_DC24_LD(Enum_BSP_DC24_Status Status);
