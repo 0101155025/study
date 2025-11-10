@@ -64,11 +64,12 @@ void bubbleSort(int a[],int n)
 
 void quickSort(int a[],int l,int r)
 {
-    if (l >= r || a == nullptr)
+    if (a == nullptr)
     {
-        cerr << "the array is empty or l or r is invalid" << endl;
+        cerr << "the array is empty" << endl;
         return;
     }
+    if (l >= r) return;
     int left = l,right = r,temp = 0;
     if (left <= right)
     {

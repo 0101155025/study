@@ -3,8 +3,6 @@ project(Algorithm_practice)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Algorithm_practice linked_list.cpp
+add_executable(Algorithm_practice
         TreeNode.cpp
-        ThreadNode.cpp
-        sort.cpp
 )
