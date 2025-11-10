@@ -7,8 +7,15 @@ using namespace std;
  * @param a 待排序数组
  * @param n 数组长度
  */
-
 void bubbleSort(int a[],int n);
+
+/**
+ * @brief 选择排序
+ *
+ * @param a 待排序数组
+ * @param n 数组长度
+ */
+void selectionSort(int a[],int n);
 
 /**
  * @brief 快速排序
@@ -34,6 +41,11 @@ int main()
     bubbleSort(a,10);
     display(a,10);
 
+    // 选择排序
+    int c[10] = {1,3,2,4,5,6,7,8,9,10};
+    selectionSort(c,10);
+    display(c,10);
+
     // 快速排序
     int b[10] = {1,3,2,4,5,8,7,6,9,8};
     quickSort(b,0,9);
@@ -58,6 +70,30 @@ void bubbleSort(int a[],int n)
                 a[j] = a[j + 1];
                 a[j + 1] = temp;
             }
+        }
+    }
+}
+
+void selectionSort(int a[],int n)
+{
+    if (n <= 0 || a == nullptr)
+    {
+        cerr << "the array is empty or n is invalid" << endl;
+        return;
+    }
+    for (int i = 0;i < n - 1;i++)
+    {
+        int min = i;
+        for (int j = i + 1;j < n;j++)
+        {
+            if (a[j] < a[min])
+                min = j;
+        }
+        if (min != i)
+        {
+            int temp = a[i];
+            a[i] = a[min];
+            a[min] = temp;
         }
     }
 }
