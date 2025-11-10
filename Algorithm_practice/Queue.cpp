@@ -156,3 +156,7 @@ ElemType getTop(Queue *q)
     }
     return q->data[q->front];
 }
+
+//
+// Created by Fly.
+//

@@ -110,3 +110,7 @@ void postOrder(BiTree T)
     postOrder(T->rchild);
     cout << T->data << " ";
 }
+
+//
+// Created by Fly.
+//

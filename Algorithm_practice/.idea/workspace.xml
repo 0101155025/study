@@ -30,9 +30,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0590a7c3-f7cd-4da1-95db-1068a58f88ab" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/TreeNode.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ThreadNode.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sort.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Queue.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Queue.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TreeNode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/TreeNode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TreeNode.exe" beforeDir="false" afterPath="$PROJECT_DIR$/TreeNode.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/double_linked_list.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/double_linked_list.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linked_list.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/linked_list.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recursion.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/recursion.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +78,7 @@
     "C/C++ 文件.noj.cpp.executor": "Run",
     "C/C++ 文件.recursion.cpp.executor": "Run",
     "C/C++ 文件.schoolHomework.c.executor": "Run",
+    "C/C++ 文件.sort.cpp.executor": "Run",
     "C/C++ 文件.stack.cpp.executor": "Run",
     "CMake Application.Algorithm_practice.executor": "Run",
     "CMake 应用程序.Algorithm_practice.executor": "Run",
@@ -95,10 +103,10 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="C/C++ 文件.TreeNode.cpp">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+  <component name="RunManager" selected="C/C++ 文件.sort.cpp">
+    <configuration name="Algorithm_practice" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="Algorithm_practice" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Algorithm_practice" RUN_TARGET_NAME="Algorithm_practice">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="Algorithm_practice" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="Algorithm_practice" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Algorithm_practice" RUN_TARGET_NAME="Algorithm_practice">
@@ -106,7 +114,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Algorithm_practice" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="Algorithm_practice" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Algorithm_practice" RUN_TARGET_NAME="Algorithm_practice">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -129,12 +137,6 @@
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="double_linked_list.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="double_linked_list.cpp" CONFIG_NAME="double_linked_list.cpp">
-      <option name="sourceFile" value="double_linked_list.cpp" />
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="recursion.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="recursion.cpp" CONFIG_NAME="recursion.cpp">
       <option name="sourceFile" value="recursion.cpp" />
       <method v="2">
@@ -147,8 +149,8 @@
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="stack.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="stack.cpp" CONFIG_NAME="stack.cpp">
-      <option name="sourceFile" value="stack.cpp" />
+    <configuration name="sort.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Algorithm_practice" TARGET_NAME="sort.cpp" CONFIG_NAME="sort.cpp">
+      <option name="sourceFile" value="sort.cpp" />
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
@@ -160,20 +162,20 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="C/C++ 文件.sort.cpp" />
       <item itemvalue="C/C++ 文件.TreeNode.cpp" />
       <item itemvalue="C/C++ 文件.Queue.cpp" />
       <item itemvalue="C/C++ 文件.recursion.cpp" />
       <item itemvalue="C/C++ 文件.schoolHomework.c" />
-      <item itemvalue="C/C++ 文件.stack.cpp" />
       <item itemvalue="CMake 应用程序.Algorithm_practice" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="C/C++ 文件.sort.cpp" />
         <item itemvalue="C/C++ 文件.TreeNode.cpp" />
         <item itemvalue="C/C++ 文件.recursion.cpp" />
         <item itemvalue="C/C++ 文件.Queue.cpp" />
         <item itemvalue="C/C++ 文件.schoolHomework.c" />
-        <item itemvalue="C/C++ 文件.stack.cpp" />
       </list>
     </recent_temporary>
   </component>
@@ -209,6 +211,7 @@
       <workItem from="1762421030875" duration="1339000" />
       <workItem from="1762433322861" duration="9000" />
       <workItem from="1762438076291" duration="2889000" />
+      <workItem from="1762753915387" duration="2822000" />
     </task>
     <servers />
   </component>
