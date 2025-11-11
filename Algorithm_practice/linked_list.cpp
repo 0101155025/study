@@ -2,13 +2,13 @@
 #include <cmath>
 using namespace std;
 
-typedef int ElemType;
+typedef int LinkType;
 /*
  * 单链表的定义
  */
 struct ListNode
 {
-    ElemType val;
+    LinkType val;
     ListNode* next;
     ListNode()
     {
@@ -23,7 +23,7 @@ struct ListNode
  * 返回值: 插入的节点
  */
 
-ListNode* headInsert(ListNode *L, ElemType val);
+ListNode* headInsert(ListNode *L, LinkType val);
 
 /*尾插法
  * head: 单链表的头指针
@@ -31,7 +31,7 @@ ListNode* headInsert(ListNode *L, ElemType val);
  * 返回值: 插入的节点
  */
 
-ListNode *tailInsert(ListNode *head,ElemType val);
+ListNode *tailInsert(ListNode *head,LinkType val);
 
 /*在指定位置插入元素
  * head: 单链表的头指针
@@ -40,7 +40,7 @@ ListNode *tailInsert(ListNode *head,ElemType val);
  * 返回值: 插入的元素值
  */
 
-ElemType insert(ListNode* head,ElemType val,int pos);
+LinkType insert(ListNode* head,LinkType val,int pos);
 
 /*
  * 遍历数组
@@ -95,7 +95,7 @@ void display(const ListNode* L);
  * 返回值: 从后往前数第pos个元素的值
  */
 
-ElemType countDown1(const ListNode *head,int repos);
+LinkType countDown1(const ListNode *head,int repos);
 
 /*
  * 从后往前数第pos个元素(双指针法)
@@ -104,7 +104,7 @@ ElemType countDown1(const ListNode *head,int repos);
  * 返回值: 从后往前数第pos个元素的值
  */
 
-ElemType countDown2(const ListNode *head,int repos);
+LinkType countDown2(const ListNode *head,int repos);
 
 /*
  * 找到两个单链表的公共后缀节点(双指针法)
@@ -260,7 +260,7 @@ int main() {
     return 0;
 }
 
-ListNode* headInsert(ListNode *L, ElemType val)
+ListNode* headInsert(ListNode *L, LinkType val)
 {
     if (L == nullptr) return nullptr;
     ListNode *node = new ListNode();
@@ -270,7 +270,7 @@ ListNode* headInsert(ListNode *L, ElemType val)
     return node;
 }
 
-ListNode *tailInsert(ListNode *head,ElemType val)
+ListNode *tailInsert(ListNode *head,LinkType val)
 {
     if (head == nullptr) return nullptr;
     ListNode *tail = head;
@@ -282,7 +282,7 @@ ListNode *tailInsert(ListNode *head,ElemType val)
     return node;
 }
 
-ElemType insert(ListNode* head,ElemType val,int pos)
+LinkType insert(ListNode* head,LinkType val,int pos)
 {
     if (head == nullptr || pos < 1) return -1;
     ListNode *p = head;
@@ -384,7 +384,7 @@ void display(const ListNode* L)
     cout << endl;
 }
 
-ElemType countDown1(const ListNode *head,int repos)
+LinkType countDown1(const ListNode *head,int repos)
 {
     if (head ==  nullptr || head->next == nullptr)
     {
@@ -403,7 +403,7 @@ ElemType countDown1(const ListNode *head,int repos)
     return p->val;
 }
 
-ElemType countDown2(const ListNode *head,int repos)
+LinkType countDown2(const ListNode *head,int repos)
 {
     if (head ==  nullptr || head->next == nullptr || repos < 1)
     {

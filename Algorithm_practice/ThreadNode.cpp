@@ -1,13 +1,13 @@
 #include <iostream>
 using namespace std;
 
-typedef char ElemType;
+typedef char ThreeTreeType;
 char str[] = "ABDH##I##EJ###CF##G##";
 int inx = 0;
 
 typedef struct ThreadNode
 {
-    ElemType data;
+    ThreeTreeType data;
     ThreadNode *lchild;
     ThreadNode *rchild;
     int ltag;
@@ -45,7 +45,7 @@ int main()
 
 void createTree(ThreadTree *T)
 {
-    ElemType ch = str[inx++];
+    ThreeTreeType ch = str[inx++];
     if (ch == '#')
         *T = nullptr;
     else

@@ -1,11 +1,11 @@
 #include <iostream>
 using namespace std;
 
-typedef int ElemType;
+typedef int DoubleLinkType;
 
 // 双链表节点
 struct Node {
-    ElemType val;
+    DoubleLinkType val;
     Node* prev, *next;
     Node()
     {
@@ -13,7 +13,7 @@ struct Node {
         next = nullptr;
         val = 0;
     }
-    Node(ElemType x)
+    Node(DoubleLinkType x)
     {
         prev = nullptr;
         next = nullptr;
@@ -28,7 +28,7 @@ struct Node {
  * @return 插入的节点
  */
 
-Node* headInsert(Node* head, ElemType x);
+Node* headInsert(Node* head, DoubleLinkType x);
 
 /**
  * 尾插法
@@ -37,7 +37,7 @@ Node* headInsert(Node* head, ElemType x);
  * @return 插入的节点
  */
 
-Node *tailInsert(Node* head, ElemType x);
+Node *tailInsert(Node* head, DoubleLinkType x);
 
 /**
  * 任意位置插入
@@ -47,7 +47,7 @@ Node *tailInsert(Node* head, ElemType x);
  * @return 插入的节点
  */
 
-Node *posInsert(Node* head, int pos, ElemType x);
+Node *posInsert(Node* head, int pos, DoubleLinkType x);
 
 /**
  * 删除任意位置的元素
@@ -56,7 +56,7 @@ Node *posInsert(Node* head, int pos, ElemType x);
  * @return 删除的元素值
  */
 
-ElemType deletePos(Node* head, int pos);
+DoubleLinkType deletePos(Node* head, int pos);
 
 /**
  * 清空双链表
@@ -120,7 +120,7 @@ int main()
     return 0;
 }
 
-Node* headInsert(Node* head, ElemType x)
+Node* headInsert(Node* head, DoubleLinkType x)
 {
     if (head == nullptr)
     {
@@ -135,7 +135,7 @@ Node* headInsert(Node* head, ElemType x)
     return temp;
 }
 
-Node *tailInsert(Node* head, ElemType x)
+Node *tailInsert(Node* head, DoubleLinkType x)
 {
     if (head == nullptr)
     {
@@ -149,7 +149,7 @@ Node *tailInsert(Node* head, ElemType x)
     return temp;
 }
 
-Node *posInsert(Node* head, int pos, ElemType x)
+Node *posInsert(Node* head, int pos, DoubleLinkType x)
 {
     if (head == nullptr)
     {
@@ -171,7 +171,7 @@ Node *posInsert(Node* head, int pos, ElemType x)
     return newNode;
 }
 
-ElemType deletePos(Node* head, int pos)
+DoubleLinkType deletePos(Node* head, int pos)
 {
     if (head == nullptr)
     {
@@ -188,7 +188,7 @@ ElemType deletePos(Node* head, int pos)
     Node *delNode = temp->next;
     temp->next = delNode->next;
     if (delNode->next != nullptr) delNode->next->prev = temp;
-    ElemType delVal = delNode->val;
+    DoubleLinkType delVal = delNode->val;
     delete delNode;
     return delVal;
 }

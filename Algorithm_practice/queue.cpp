@@ -3,16 +3,16 @@ using namespace std;
 
 #define MAXSIZE 100
 
-typedef int ElemType;
+typedef int QueueType;
 
 // 队列的实现
 typedef struct Queue
 {
-    ElemType *data;
+    QueueType *data;
     int front,rear;
     Queue()
     {
-        data = new ElemType[MAXSIZE];
+        data = new QueueType[MAXSIZE];
         front = 0;
         rear = 0;
     }
@@ -31,7 +31,7 @@ typedef struct Queue
  * @return false 入队失败
  */
 
-bool eQueue(Queue *q,ElemType e);
+bool eQueue(Queue *q,QueueType e);
 
 /**
  * @brief 出队操作
@@ -40,7 +40,7 @@ bool eQueue(Queue *q,ElemType e);
  * @return ElemType 出队元素
  */
 
-ElemType deQueue(Queue *q);
+QueueType deQueue(Queue *q);
 
 /**
  * @brief 判断队列是否为空
@@ -69,7 +69,7 @@ bool isFull(Queue *q);
  * @return ElemType 队列头元素
  */
 
-ElemType getTop(Queue *q);
+QueueType getTop(Queue *q);
 
 int main()
 {
@@ -83,7 +83,7 @@ int main()
     return 0;
 }
 
-bool eQueue(Queue *q,ElemType e)
+bool eQueue(Queue *q,QueueType e)
 {
     if (q == nullptr)
     {
@@ -100,7 +100,7 @@ bool eQueue(Queue *q,ElemType e)
     return true;
 }
 
-ElemType deQueue(Queue *q)
+QueueType deQueue(Queue *q)
 {
     if (q == nullptr)
     {
@@ -112,7 +112,7 @@ ElemType deQueue(Queue *q)
         cerr<<"the queue is empty"<<endl;
         return -1;
     }
-    ElemType e = q->data[q->front];
+    QueueType e = q->data[q->front];
     q->front = (q->front + 1) % MAXSIZE;
     return e;
 }
@@ -142,7 +142,7 @@ bool isFull(Queue *q)
     else return false;
 }
 
-ElemType getTop(Queue *q)
+QueueType getTop(Queue *q)
 {
     if (q == nullptr)
     {

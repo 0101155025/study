@@ -1,10 +1,10 @@
 #include <iostream>
 using namespace std;
 
-typedef char ElemType;
+typedef char TreeType;
 typedef struct TreeNode
 {
-    ElemType data;
+    TreeType data;
     TreeNode *lchild,*rchild;
     TreeNode()
     {
@@ -12,7 +12,7 @@ typedef struct TreeNode
         lchild = nullptr;
         rchild = nullptr;
     }
-    TreeNode(ElemType data)
+    explicit TreeNode(TreeType data)
     {
         this->data = data;
         lchild = nullptr;
@@ -76,7 +76,7 @@ int main()
 
 void createTree(BiTree *T)
 {
-    ElemType ch;
+    TreeType ch;
     ch = str[idx++];
     if (ch == '#') *T = nullptr;
     else
