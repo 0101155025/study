@@ -458,6 +458,11 @@
               <FileType>8</FileType>
               <FilePath>..\User\drv_bsp.cpp</FilePath>
             </File>
+            <File>
+              <FileName>dvc_motor.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User\dvc_motor.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

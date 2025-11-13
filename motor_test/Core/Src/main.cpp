@@ -28,9 +28,7 @@
 
 #include "dvc_serialplot.h"
 #include "drv_bsp.h"
-#include "drv_can.h"
-
-#include "alg_pid.h"
+#include "dvc_motor.h"
 
 /* USER CODE END Includes */
 
@@ -54,9 +52,21 @@
 /* USER CODE BEGIN PV */
 
 Class_Serialplot serialplot;
+Class_Motor_C620 motor;
 
-int16_t Rx_Encoder, Rx_Omega, Rx_Torque, Rx_Temperature;
-float   Tx_Encoder, Tx_Omega, Tx_Torque, Tx_Temperature;
+float Target_Angle, Now_Angle, Target_Omega, Now_Omega;
+
+uint32_t Counter = 0;
+
+static char Variable_Assignment_List[][SERIALPLOT_RX_VARIABLE_ASSIGNMENT_MAX_LENGTH] = {
+  // 电机调PID
+  "pa",
+  "ia",
+  "da",
+  "po",
+  "io",
+  "do",
+};
 
 /* USER CODE END PV */
 
@@ -71,16 +81,51 @@ void SystemClock_Config(void);
 
 void CAN_Motor_Call_Back(Struct_CAN_Rx_Buffer *Rx_Buffer)
 {
-  uint8_t *Rx_Data = Rx_Buffer->Data;
   switch(Rx_Buffer->Header.StdId)
   {
-    case (0x204):{
-      Rx_Encoder = (Rx_Data[0] << 8) | Rx_Data[1];
-      Rx_Omega = (Rx_Data[2] << 8) | Rx_Data[3];
-      Rx_Torque = (Rx_Data[4] << 8) | Rx_Data[5];
-      Rx_Temperature = Rx_Data[6];
+    case (0x201):
+    {
+        motor.CAN_RxCpltCallback(Rx_Buffer->Data);
     }
     break;
+  }
+}
+
+void UART_Serialplot_Call_Back(uint8_t *Buffer, uint16_t Length)
+{
+  serialplot.UART_RxCpltCallback(Buffer);
+  switch(serialplot.Get_Variable_Index())
+  {
+    case(0):
+      {
+        motor.PID_Angle.Set_K_P(serialplot.Get_Variable_Value());
+      }
+      break;
+    case(1):
+      {
+        motor.PID_Angle.Set_K_I(serialplot.Get_Variable_Value());
+      }
+      break;
+    case(2):
+      {
+        motor.PID_Angle.Set_K_D(serialplot.Get_Variable_Value());
+      }
+      break;
+    case(3):
+      {
+        motor.PID_Omega.Set_K_P(serialplot.Get_Variable_Value());
+      }
+      break;
+    case(4):
+      {
+        motor.PID_Omega.Set_K_I(serialplot.Get_Variable_Value());
+      }
+      break;
+    case(5):
+      {
+        motor.PID_Omega.Set_K_D(serialplot.Get_Variable_Value());
+      }
+      break;
   }
 }
 
@@ -126,8 +171,12 @@ int main(void)
   CAN_Init(&hcan1,CAN_Motor_Call_Back);
   // uart初始化
   UART_Init(&huart2, NULL, SERIALPLOT_RX_VARIABLE_ASSIGNMENT_MAX_LENGTH);
-  CAN_Filter_Mask_Config(&hcan1, CAN_FILTER(13) | CAN_FIFO_1 | CAN_STDID | CAN_DATA_TYPE, 0x204, 0x7ff);
-  serialplot.Init(&huart2, 0, NULL);
+
+  serialplot.Init(&huart2, 6, (char **)Variable_Assignment_List);
+
+  motor.PID_Angle.Init(0.0f, 0.0f, 0.0f, 0.0f, 15.0f * PI, 15.0f * PI);
+  motor.PID_Omega.Init(0.0f, 0.0f, 0.0f ,0.0f, 2500.0f, 2500.0f);
+  motor.Init(&hcan1, CAN_Motor_ID_0x201, Control_Method_ANGLE, 1.0f);
 
   /* USER CODE END 2 */
 
@@ -135,14 +184,36 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    Tx_Encoder = Rx_Encoder;
-    Tx_Omega = Rx_Omega;
-    Tx_Torque = Rx_Torque;
-    Tx_Temperature = Rx_Temperature;
-    serialplot.Set_Data(4, &Tx_Encoder, &Tx_Omega, &Tx_Torque, &Tx_Temperature);
+    //如果计时到2000就换一个目标值
+    if(Counter >= 2000)
+    {
+      Counter = 0;
+      if(motor.Get_Target_Angle() == 4.0f * PI)
+      {
+          motor.Set_Target_Angle(0.0f);
+      }
+      else if(motor.Get_Target_Angle() == 0.0f)
+      {
+          motor.Set_Target_Angle(4.0f * PI);
+      }
+    }
+    // 串口绘图显示内容
+
+    Target_Angle = motor.Get_Target_Angle();
+    Now_Angle = motor.Get_Now_Angle();
+    Target_Omega = motor.Get_Target_Omega();
+    Now_Omega = motor.Get_Now_Omega();
+    serialplot.Set_Data(4, &Target_Angle, &Now_Angle, &Target_Omega, &Now_Omega);
     serialplot.TIM_Write_PeriodElapsedCallback();
+
+    // 输出数据到电机
+    motor.TIM_PID_PeriodElapsedCallback();
+
+    //通信设备回调数据
+    TIM_CAN_PeriodElapsedCallback();
     TIM_UART_PeriodElapsedCallback();
 
+    // 延时1ms
     HAL_Delay(0);
     /* USER CODE END WHILE */
 
