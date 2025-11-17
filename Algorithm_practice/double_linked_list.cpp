@@ -1,11 +1,12 @@
 #include <iostream>
 using namespace std;
 
-typedef int DoubleLinkType;
+#define INT 1
+#include "Algorithm_practice.h"
 
 // 双链表节点
 struct Node {
-    DoubleLinkType val;
+    ElemType val;
     Node* prev, *next;
     Node()
     {
@@ -13,7 +14,7 @@ struct Node {
         next = nullptr;
         val = 0;
     }
-    Node(DoubleLinkType x)
+    Node(ElemType x)
     {
         prev = nullptr;
         next = nullptr;
@@ -28,7 +29,7 @@ struct Node {
  * @return 插入的节点
  */
 
-Node* headInsert(Node* head, DoubleLinkType x);
+Node* headInsert(Node* head, ElemType x);
 
 /**
  * 尾插法
@@ -37,7 +38,7 @@ Node* headInsert(Node* head, DoubleLinkType x);
  * @return 插入的节点
  */
 
-Node *tailInsert(Node* head, DoubleLinkType x);
+Node *tailInsert(Node* head, ElemType x);
 
 /**
  * 任意位置插入
@@ -47,7 +48,7 @@ Node *tailInsert(Node* head, DoubleLinkType x);
  * @return 插入的节点
  */
 
-Node *posInsert(Node* head, int pos, DoubleLinkType x);
+Node *posInsert(Node* head, int pos, ElemType x);
 
 /**
  * 删除任意位置的元素
@@ -56,7 +57,7 @@ Node *posInsert(Node* head, int pos, DoubleLinkType x);
  * @return 删除的元素值
  */
 
-DoubleLinkType deletePos(Node* head, int pos);
+ElemType deletePos(Node* head, int pos);
 
 /**
  * 清空双链表
@@ -120,7 +121,7 @@ int main()
     return 0;
 }
 
-Node* headInsert(Node* head, DoubleLinkType x)
+Node* headInsert(Node* head, ElemType x)
 {
     if (head == nullptr)
     {
@@ -135,7 +136,7 @@ Node* headInsert(Node* head, DoubleLinkType x)
     return temp;
 }
 
-Node *tailInsert(Node* head, DoubleLinkType x)
+Node *tailInsert(Node* head, ElemType x)
 {
     if (head == nullptr)
     {
@@ -149,7 +150,7 @@ Node *tailInsert(Node* head, DoubleLinkType x)
     return temp;
 }
 
-Node *posInsert(Node* head, int pos, DoubleLinkType x)
+Node *posInsert(Node* head, int pos, ElemType x)
 {
     if (head == nullptr)
     {
@@ -171,7 +172,7 @@ Node *posInsert(Node* head, int pos, DoubleLinkType x)
     return newNode;
 }
 
-DoubleLinkType deletePos(Node* head, int pos)
+ElemType deletePos(Node* head, int pos)
 {
     if (head == nullptr)
     {
@@ -188,7 +189,7 @@ DoubleLinkType deletePos(Node* head, int pos)
     Node *delNode = temp->next;
     temp->next = delNode->next;
     if (delNode->next != nullptr) delNode->next->prev = temp;
-    DoubleLinkType delVal = delNode->val;
+    ElemType delVal = delNode->val;
     delete delNode;
     return delVal;
 }

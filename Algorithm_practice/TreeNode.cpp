@@ -1,10 +1,12 @@
 #include <iostream>
 using namespace std;
 
-typedef char TreeType;
+#define CHAR 1
+#include "Algorithm_practice.h"
+
 typedef struct TreeNode
 {
-    TreeType data;
+    ElemType data;
     TreeNode *lchild,*rchild;
     TreeNode()
     {
@@ -12,7 +14,7 @@ typedef struct TreeNode
         lchild = nullptr;
         rchild = nullptr;
     }
-    explicit TreeNode(TreeType data)
+    explicit TreeNode(ElemType data)
     {
         this->data = data;
         lchild = nullptr;
@@ -76,7 +78,7 @@ int main()
 
 void createTree(BiTree *T)
 {
-    TreeType ch;
+    ElemType ch;
     ch = str[idx++];
     if (ch == '#') *T = nullptr;
     else

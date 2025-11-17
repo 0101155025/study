@@ -4,12 +4,13 @@ using namespace std;
 
 #define MAXSIZE 100
 
-typedef int StackType;
+#define INT 1
+#include "Algorithm_practice.h"
 
 // 栈的实现
 typedef struct Stack
 {
-    StackType data[MAXSIZE];
+    ElemType data[MAXSIZE];
     int top;
     Stack()
     {
@@ -26,7 +27,7 @@ typedef struct Stack
  * @return false 入栈失败
  */
 
-bool push(Stack *s,StackType e);
+bool push(Stack *s,ElemType e);
 
 /**
  * @brief 出栈操作
@@ -35,7 +36,7 @@ bool push(Stack *s,StackType e);
  * @return ElemType 出栈元素
  */
 
-bool pop(Stack *s,StackType *e);
+bool pop(Stack *s,ElemType *e);
 
 /**
  * @brief 获取栈顶元素
@@ -44,7 +45,7 @@ bool pop(Stack *s,StackType *e);
  * @return ElemType 栈顶元素
  */
 
-bool getTop(Stack *s,StackType &e);
+bool getTop(Stack *s,ElemType &e);
 
 /**
  * @brief 销毁栈
@@ -79,7 +80,7 @@ int main()
 
     // 出栈操作
     cout << "pop top element:" << endl;
-    StackType e;
+    ElemType e;
     pop(s,&e);
     display(s);
 
@@ -91,7 +92,7 @@ int main()
     return 0;
 }
 
-bool push(Stack *s,StackType e)
+bool push(Stack *s,ElemType e)
 {
     if (s->top == MAXSIZE - 1)
     {
@@ -103,7 +104,7 @@ bool push(Stack *s,StackType e)
     return true;
 }
 
-bool pop(Stack *s,StackType *e)
+bool pop(Stack *s,ElemType *e)
 {
     if (s == nullptr || s->top == -1)
     {
@@ -115,7 +116,7 @@ bool pop(Stack *s,StackType *e)
     return true;
 }
 
-bool getTop(Stack *s,StackType &e)
+bool getTop(Stack *s,ElemType &e)
 {
     if (s == nullptr || s->top == -1)
     {
