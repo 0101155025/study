@@ -19,7 +19,7 @@ typedef struct
 int visited[MAXSIZE];
 int front = 0;
 int rear = 0;
-int queue[MAXSIZE];
+int bfs_queue[MAXSIZE];
 
 /**
  * @brief 创建邻接矩阵表示的无向图
@@ -65,7 +65,7 @@ void bfs(Mat_Graph G);
  * 该函数负责初始化并构建一个包含9个顶点、15条边的无向图的最小生成树，
  * 使用邻接矩阵表示法，其中1表示顶点间有边相连，0表示无边相连。
  */
-void prime(Mat_Graph* G);
+void prim(Mat_Graph* G);
 
 int main()
 {
@@ -86,13 +86,19 @@ int main()
 
     // 最小生成树 Prim 算法
     create_graph_prime(&G);
-    prime(&G);
+    prim(&G);
 
     return 0;
 }
 
 void create_graph(Mat_Graph* G)
 {
+    if (G == nullptr)
+    {
+        cerr << "Error: G is nullptr" << endl;
+        return;
+    }
+
     G->vertex_num = 9;
     G->edge_num = 15;
     G->vertex[0] = 'A';
@@ -145,6 +151,12 @@ void create_graph(Mat_Graph* G)
 
 void create_graph_prime(Mat_Graph* G)
 {
+    if (G == nullptr)
+    {
+        cerr << "Error: G is nullptr" << endl;
+        return;
+    }
+
     G->vertex_num = 9;
     G->edge_num = 15;
     G->vertex[0] = 'A';
@@ -210,22 +222,28 @@ void bfs(Mat_Graph G)
     int i = 0;
     visited[i] = 1;
     cout << G.vertex[i] << ' ';
-    queue[rear++] = i;
+    bfs_queue[rear++] = i;
     while (front != rear)
     {
-        i = queue[front++];
+        i = bfs_queue[front++];
         for (int j = 0;j < G.vertex_num;j++)
             if (G.arc[i][j] == 1 && visited[j] == 0)
             {
                 visited[j] = 1;
                 cout << G.vertex[j] << ' ';
-                queue[rear++] = j;
+                bfs_queue[rear++] = j;
             }
     }
 }
 
-void prime(Mat_Graph* G)
+void prim(Mat_Graph* G)
 {
+    if (G == nullptr)
+    {
+        cerr << "Error: G is nullptr" << endl;
+        return;
+    }
+
     int i,j,temp;
     int min;
     int weight[MAXSIZE]; // 候选边
